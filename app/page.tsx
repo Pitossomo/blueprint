@@ -6,6 +6,7 @@ import { useState, useRef, useEffect, ChangeEvent } from "react";
 export default function Home() {
   const [inputValue, setInputValue] = useState<string>('');
   const [slabs, setSlabs] = useState<Slab[]>([]);
+  const [beams, setBeams] = useState<string[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -33,24 +34,36 @@ export default function Home() {
         newSlabs.push(new Slab(x, y, dx, dy));  
       } catch (e) {}
     });
-    console.log(newSlabs)
     
     setSlabs(newSlabs);
   };
 
+  const generateBeams = () => {
+    const newBeams = slabs.map(slab =>`${slab.x} ${slab.y} ${slab.dx} ${slab.dy}`);
+    setBeams(newBeams);
+  }
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Desenhe Formas Geométricas</h1>
+
+      <canvas
+        ref={canvasRef}
+        width={800} height={600}
+        className="border border-gray-300 rounded"
+      />
+
       <textarea 
         className="w-full h-24 p-2 mb-4 border rounded"
         placeholder="Digite as instruções aqui..."
         value={inputValue}
         onChange={handleChange}
       />
-      <canvas
-        ref={canvasRef}
-        width={800} height={600}
-        className="border border-gray-300 rounded"
+      <button className="bg-blue-500 text-white p-2 rounded" onClick={generateBeams}>
+        Gerar Vigas
+      </button>
+      <textarea className="w-full h-24 p-2 mt-4 border rounded"
+        placeholder="Vigas Gerados..." value={beams.join('\n')} readOnly
       />
     </div>
   );
