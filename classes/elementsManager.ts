@@ -1,5 +1,6 @@
-import { act } from "react";
 import { Floor } from "./floor";
+import { IElement } from "./iElement";
+import { Point2D } from "./point2D";
 import { Slab } from "./slab";
 
 export enum LayerType {
@@ -12,10 +13,15 @@ export class ElementsManager {
     floors: Floor[];
     slabs: Slab[];
 
+    static readonly LAYER_TO_CLASS_MAP = {
+        [LayerType.FLOORS]: Floor,
+        [LayerType.SLABS]: Slab
+    }    
+
     constructor() {
         this.activeLayer = LayerType.FLOORS;
-        this.floors = [];
-        this.slabs = [];
+        this.floors = [new Floor([new Point2D(200,200), new Point2D(300,300)])];
+        this.slabs = [new Slab(100,100,100,100)];
     }
 
     setActiveLayer(layer: LayerType) {
@@ -23,7 +29,7 @@ export class ElementsManager {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        //TODO
+        this[this.activeLayer].forEach(element => {element.draw(ctx)})
     }
 
     parseInput(input: string) {
