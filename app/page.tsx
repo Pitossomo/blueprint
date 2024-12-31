@@ -1,47 +1,41 @@
 "use client";
 
-import { Slab } from "@/classes/slab";
+import { ElementsManager, LayerType } from "@/classes/elementsManager";
 import { useState, useRef, useEffect, ChangeEvent } from "react";
 
 export default function Home() {
+  const [elementsManager, setElementsManager] = useState<ElementsManager>(new ElementsManager());
   const [inputValue, setInputValue] = useState<string>('');
-  const [slabs, setSlabs] = useState<Slab[]>([]);
-  const [beams, setBeams] = useState<string[]>([]);
+  const [activeLayer, setActiveLayer] = useState<LayerType>(elementsManager.activeLayer);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
 
     if (canvas && ctx) {
+      // Set active layer
+      elementsManager.setActiveLayer(activeLayer);
       // Clean the canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      slabs.forEach((slab) => { slab.draw(ctx) })
-
+      // Call the elements manager to draw on the canvas
+      elementsManager.draw(ctx)
     }
-  }, [inputValue]);
+  }, [inputValue, activeLayer]);
 
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+  const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     const input = e.target.value;
     setInputValue(input);
-    
-    // Parse input and update customSlabs
-    const newSlabs:Slab[] = []
-    input.split(',').forEach((slab: string) => {
-      try {
-        const [x, y, dx, dy] = slab.trim().split(' ').map(Number);
-        newSlabs.push(new Slab(x, y, dx, dy));  
-      } catch (e) {}
-    });
-    
-    setSlabs(newSlabs);
   };
 
-  const generateBeams = () => {
-    const newBeams = slabs.map(slab =>`${slab.x} ${slab.y} ${slab.dx} ${slab.dy}`);
-    setBeams(newBeams);
-  }
+  const handleLayerChange = (e: ChangeEvent<HTMLSelectElement>): void => {
+    const selectedLayer = e.target.value as LayerType;
+    console.log('layer changed')
+    setActiveLayer(selectedLayer)
+    elementsManager.setActiveLayer(selectedLayer);
+  };
+
+  const layerTypes = Object.values(LayerType);
 
   return (
     <div className="p-4">
@@ -53,17 +47,17 @@ export default function Home() {
         className="border border-gray-300 rounded"
       />
 
-      <textarea 
+      <select className="p-4" onChange={handleLayerChange}>
+        { layerTypes.map(layer => (
+          <option key={layer} value={layer}>{layer}</option>
+        ))}
+      </select>
+
+      <textarea
         className="w-full h-24 p-2 mb-4 border rounded"
         placeholder="Digite as instruções aqui..."
         value={inputValue}
-        onChange={handleChange}
-      />
-      <button className="bg-blue-500 text-white p-2 rounded" onClick={generateBeams}>
-        Gerar Vigas
-      </button>
-      <textarea className="w-full h-24 p-2 mt-4 border rounded"
-        placeholder="Vigas Gerados..." value={beams.join('\n')} readOnly
+        onChange={handleTextChange}
       />
     </div>
   );

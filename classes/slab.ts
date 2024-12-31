@@ -1,4 +1,6 @@
-export class Slab {
+import { IElement } from "./iElement";
+
+export class Slab implements IElement {
     x: number;
     y: number;
     dx: number;
