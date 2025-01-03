@@ -1,4 +1,4 @@
-import { IElement } from "./iElement"
+import { IElement } from "../app/interfaces/iElement"
 import { Point2D } from "./point2D";
 
 export class Floor implements IElement{
