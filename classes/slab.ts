@@ -1,4 +1,4 @@
-import { IElement } from "./iElement";
+import { IElement } from "../app/interfaces/iElement";
 
 export class Slab implements IElement {
     x: number;
