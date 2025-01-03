@@ -1,27 +1,20 @@
-import { Floor } from "./floor";
-import { IElement } from "./iElement";
-import { Point2D } from "./point2D";
-import { Slab } from "./slab";
+import { FloorList } from "./floorList";
+import { SlabList } from "./slabList";
 
 export enum LayerType {
-    FLOORS = 'floors',
-    SLABS = 'slabs'
+    FLOORS = 'floorList',
+    SLABS = 'slabList'
 }
 
 export class ElementsManager {
     activeLayer: LayerType;
-    floors: Floor[];
-    slabs: Slab[];
-
-    static readonly LAYER_TO_CLASS_MAP = {
-        [LayerType.FLOORS]: Floor,
-        [LayerType.SLABS]: Slab
-    }    
+    floorList: FloorList;
+    slabList: SlabList;
 
     constructor() {
         this.activeLayer = LayerType.FLOORS;
-        this.floors = [new Floor([new Point2D(200,200), new Point2D(300,300)])];
-        this.slabs = [new Slab(100,100,100,100)];
+        this.floorList = new FloorList();
+        this.slabList = new SlabList();
     }
 
     setActiveLayer(layer: LayerType) {
@@ -29,7 +22,7 @@ export class ElementsManager {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        this[this.activeLayer].forEach(element => {element.draw(ctx)})
+        this[this.activeLayer].draw(ctx);
     }
 
     parseInput(input: string) {
