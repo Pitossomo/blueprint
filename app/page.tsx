@@ -39,13 +39,6 @@ export default function Home() {
       </select>
 
       <Toolbar elementsManager={elementsManager} activeLayer={activeLayer} />
-
-      <textarea
-        className="w-full h-32 p-2 mb-4 border rounded"
-        placeholder="Digite as instruções aqui..."
-        value={inputValue}
-        onChange={handleInputChange}
-      />
     </div>
   );
 }
