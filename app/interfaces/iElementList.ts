@@ -1,7 +1,7 @@
 import { IElement } from "./iElement";
 
-export interface IElementList {
-    elements: IElement[]
+export interface IElementList<T extends IElement> {
+    elements: T[]
     draw(ctx: CanvasRenderingContext2D): void;
-    add(element: IElement): void;
+    add(element: T): void;
 }
