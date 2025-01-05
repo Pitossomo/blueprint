@@ -1,36 +1,23 @@
 "use client";
 
 import { ElementsManager, LayerType } from "@/classes/elementsManager";
-import { useState, useRef, useEffect, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent } from "react";
 import Toolbar from "./components/toolbar";
 
 export default function Home() {
-  const [elementsManager, setElementsManager] = useState<ElementsManager>(new ElementsManager());
-  const [inputValue, setInputValue] = useState<string>('');
-  const [activeLayer, setActiveLayer] = useState<LayerType>(elementsManager.activeLayer);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
+  const elementsManager = new ElementsManager(canvasRef);
+  const [inputValue, setInputValue] = useState<string>('');
+  const [activeLayer, setActiveLayer] = useState<LayerType>(LayerType.FLOORS);
 
-    if (canvas && ctx) {
-      elementsManager.setActiveLayer(activeLayer);        // Set active layer
-      ctx.clearRect(0, 0, canvas.width, canvas.height);   // Clean the canvas
-      elementsManager.draw(ctx);                          // Call the elements manager to draw on the canvas
-    }
-  }, [inputValue, activeLayer]);
-
-  const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     const input = e.target.value;
     setInputValue(input);
   };
 
   const handleLayerChange = (e: ChangeEvent<HTMLSelectElement>): void => {
     const selectedLayer = e.target.value as LayerType;
-    console.log('layer changed')
     setActiveLayer(selectedLayer)
-    elementsManager.setActiveLayer(selectedLayer);
   };
 
   const layerTypes = Object.values(LayerType);
@@ -51,13 +38,13 @@ export default function Home() {
         ))}
       </select>
 
-      <Toolbar elementsManager={elementsManager} setElementsManager={setElementsManager} />
+      <Toolbar elementsManager={elementsManager} activeLayer={activeLayer} />
 
       <textarea
         className="w-full h-32 p-2 mb-4 border rounded"
         placeholder="Digite as instruções aqui..."
         value={inputValue}
-        onChange={handleTextChange}
+        onChange={handleInputChange}
       />
     </div>
   );
