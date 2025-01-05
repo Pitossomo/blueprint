@@ -1,5 +1,7 @@
+import { RefObject } from "react";
 import { FloorList } from "./floorList";
 import { SlabList } from "./slabList";
+import { Floor } from "./floor";
 
 export enum LayerType {
     FLOORS = 'floorList',
@@ -7,12 +9,12 @@ export enum LayerType {
 }
 
 export class ElementsManager {
-    activeLayer: LayerType;
+    canvasRef: RefObject<HTMLCanvasElement | null>;
     floorList: FloorList;
     slabList: SlabList;
 
-    constructor() {
-        this.activeLayer = LayerType.FLOORS;
+    constructor(canvasRef: RefObject<HTMLCanvasElement | null>) {
+        this.canvasRef = canvasRef;
         this.floorList = new FloorList();
         this.slabList = new SlabList();
         
@@ -26,12 +28,13 @@ export class ElementsManager {
         */
     }
 
-    setActiveLayer(layer: LayerType) {
-        this.activeLayer = layer;
+    addFloor(floor: Floor) {
+        this.floorList.add(floor);
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
-        this[this.activeLayer].draw(ctx);
+    draw(activeLayer: LayerType) {
+        const ctx = this.canvasRef.current?.getContext('2d');
+        if (ctx) this[activeLayer].draw(ctx);
     }
 
     parseInput(input: string) {
