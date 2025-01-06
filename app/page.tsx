@@ -1,26 +1,19 @@
 "use client";
 
-import { ElementsManager, LayerType } from "@/classes/elementsManager";
+import { ElementsManager } from "@/classes/elementsManager";
 import { useState, useRef, ChangeEvent } from "react";
 import Toolbar from "./components/toolbar";
+import { LAYERMAP } from "@/classes/layerMap";
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const elementsManager = new ElementsManager(canvasRef);
-  const [inputValue, setInputValue] = useState<string>('');
-  const [activeLayer, setActiveLayer] = useState<LayerType>(LayerType.FLOORS);
-
-  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    const input = e.target.value;
-    setInputValue(input);
-  };
+  const [activeLayer, setActiveLayer] = useState<string>("FLOORS");
 
   const handleLayerChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    const selectedLayer = e.target.value as LayerType;
+    const selectedLayer = e.target.value;
     setActiveLayer(selectedLayer)
   };
-
-  const layerTypes = Object.values(LayerType);
 
   return (
     <div className="w-full h-screen p-4">
@@ -33,8 +26,8 @@ export default function Home() {
       />
 
       <select className="p-4 border border-gray my-2" onChange={handleLayerChange}>
-        { layerTypes.map(layer => (
-          <option key={layer} value={layer}>{layer}</option>
+        { Object.entries(LAYERMAP).map(([layerKey, layerObj]) => (
+          <option key={layerKey} value={layerKey}>{layerObj.label}</option>
         ))}
       </select>
 
