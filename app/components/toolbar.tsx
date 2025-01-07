@@ -1,7 +1,5 @@
 import { ElementsManager } from "@/classes/elementsManager";
-import { Floor } from "@/classes/floor";
 import { LAYERMAP } from "@/classes/layerMap";
-import { Point2D } from "@/classes/point2D";
 import { ChangeEvent, useState } from "react";
 
 type ToolbarProps = {
@@ -16,20 +14,17 @@ export default function Toolbar({elementsManager, activeLayer}: ToolbarProps) {
         setPathInput(e.target.value);
     };
 
-    const parsePathInput = (input: string): Point2D[] => {
-        const points = input.split(';').map(pointStr => {
-            const [x, y] = pointStr.split(',').map(Number);
-            return new Point2D(x, y);
-        });
-        return points;
-    };
+    const handleInput = () => {
+        LAYERMAP[activeLayer].list.parseInput(pathInput);
+        elementsManager.draw(activeLayer);
+    }
 
     return (
         <div>
             <nav className="flex justify-left items-center p-2 bg-gray-200">
                 <button
                     className="px-4 py-2 text-lg cursor-pointer bg-blue-600 text-white border border-gray-300 rounded transition duration-300 hover:bg-blue-800"
-                    onClick={() => {}}
+                    onClick={handleInput}
                 >
                     Add Floor
                 </button>
