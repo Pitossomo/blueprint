@@ -6,14 +6,14 @@ export class Slab implements IElement {
     y: number;
     dx: number;
     dy: number;
-    floor: Floor;
+    height: number;
     
-    constructor(x: number, y: number, dx: number, dy: number, floor: Floor) {
+    constructor(x: number, y: number, dx: number, dy: number, height: number) {
         this.x = x;
         this.y = y;
         this.dx = dx;
         this.dy = dy;
-        this.floor = floor;
+        this.height = height;
     }
     
     draw(ctx: CanvasRenderingContext2D) {
