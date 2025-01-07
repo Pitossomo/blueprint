@@ -1,6 +1,8 @@
+import { IElementList } from "@/app/interfaces/iElementList";
 import { Floor } from "./floor";
+import { Point2D } from "./point2D";
 
-export class FloorList {
+export class FloorList implements IElementList<Floor> {
     elements: Floor[];
     
     constructor() {
@@ -14,5 +16,14 @@ export class FloorList {
     add(newFloor: Floor) {
         this.elements.push(newFloor);
         this.elements.sort((a,b) => a.height - b.height)
+    }
+
+    parseInput(input: string): void {
+        const [x,y,dx,dy,height] = input.split(',').map(parseFloat);
+
+        try {
+          this.add(new Floor(x,y,dx,dy,height));
+        } catch (e) {
+        }
     }
 }
