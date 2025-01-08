@@ -1,7 +1,7 @@
 "use client";
 
 import { ElementsManager } from "@/classes/elementsManager";
-import { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent, useEffect } from "react";
 import Toolbar from "./components/toolbar";
 import { LAYERMAP } from "@/classes/layerMap";
 
@@ -14,6 +14,15 @@ export default function Home() {
     const selectedLayer = e.target.value;
     setActiveLayer(selectedLayer)
   };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (ctx && canvas) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+      elementsManager.draw(activeLayer); // Redraw the canvas
+    }
+  }, [activeLayer]);
 
   return (
     <div className="w-full h-screen p-4">
