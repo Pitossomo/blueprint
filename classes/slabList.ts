@@ -11,4 +11,13 @@ export class SlabList {
         this.elements.push(newSlab);
         this.elements.sort((a, b) => a.x - b.x || a.y - a.y)
     }
+    
+    parseInput(input: string): void {
+        const [x,y,dx,dy,height] = input.split(',').map(parseFloat);
+
+        try {
+          this.add(new Slab(x,y,dx,dy,height));
+        } catch (e) {
+        }
+    }
 }
