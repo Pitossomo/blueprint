@@ -1,6 +1,5 @@
 import { IElementList } from "@/app/interfaces/iElementList";
 import { Floor } from "./floor";
-import { Point2D } from "./point2D";
 
 export class FloorList implements IElementList<Floor> {
     elements: Floor[];

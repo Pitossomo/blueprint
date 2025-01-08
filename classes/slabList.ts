@@ -1,4 +1,3 @@
-import { Point2D } from "./point2D";
 import { Slab } from "./slab";
 
 export class SlabList {
