@@ -1,7 +1,7 @@
-import { FloorList } from "./floorList";
-import { Layer } from "./layer";
-import { SlabList } from "./slabList";
-import { WallList } from "./wallList";
+import { FloorList } from "../../classes/floorList";
+import { Layer } from "../../classes/layer";
+import { SlabList } from "../../classes/slabList";
+import { WallList } from "../../classes/wallList";
 
 export const LAYERMAP: Record<string,Layer> = {
     FLOORS: new Layer("Pisos", "Informe as extremidades do retângulo como x0,y0,comprimentoX,comprimentoY,altura", new FloorList()),
