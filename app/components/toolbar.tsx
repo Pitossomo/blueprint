@@ -1,6 +1,8 @@
 import { ElementsManager } from "@/classes/elementsManager";
-import { LAYERMAP } from "@/classes/layerMap";
+import { LAYERMAP } from "@/app/consts/layerMap";
 import { ChangeEvent, useState } from "react";
+import { SlabList } from "@/classes/slabList";
+import { FloorList } from "@/classes/floorList";
 
 type ToolbarProps = {
     elementsManager: ElementsManager;
@@ -26,7 +28,17 @@ export default function Toolbar({elementsManager, activeLayer}: ToolbarProps) {
                     className="px-4 py-2 text-lg cursor-pointer bg-blue-600 text-white border border-gray-300 rounded transition duration-300 hover:bg-blue-800"
                     onClick={handleInput}
                 >
-                    Add Floor
+                    Inserir Piso
+                </button>
+
+                <button
+                    className="px-4 py-2 text-lg cursor-pointer bg-blue-600 text-white border border-gray-300 rounded transition duration-300 hover:bg-blue-800"
+                    onClick={() => {
+                        (LAYERMAP.SLABS.list as SlabList).generateSlabs(LAYERMAP.FLOORS.list as FloorList);
+                        elementsManager.draw(activeLayer);
+                    }}
+                >
+                    Gerar lajes
                 </button>
             </nav>
             <div className="mb-2 p-2 border border-gray-300 rounded w-full text-gray-400">
