@@ -1,5 +1,5 @@
 import { RefObject } from "react";
-import { LAYERMAP } from "./layerMap";
+import { LAYERMAP } from "../app/consts/layerMap";
 
 export class ElementsManager {
     canvasRef: RefObject<HTMLCanvasElement | null>;
@@ -9,7 +9,11 @@ export class ElementsManager {
     }
 
     draw(activeLayer: string) {
-        const ctx = this.canvasRef.current?.getContext('2d');
-        if (ctx) LAYERMAP[activeLayer].list.elements.forEach(el => {el.draw(ctx)});
+        const canvas = this.canvasRef.current;
+        const ctx = canvas?.getContext('2d');
+        if (ctx && canvas) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+            LAYERMAP[activeLayer].list.elements.forEach(el => {el.draw(ctx)});
+        }
     }
 }

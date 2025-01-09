@@ -3,7 +3,7 @@
 import { ElementsManager } from "@/classes/elementsManager";
 import { useState, useRef, ChangeEvent, useEffect } from "react";
 import Toolbar from "./components/toolbar";
-import { LAYERMAP } from "@/classes/layerMap";
+import { LAYERMAP } from "@/app/consts/layerMap";
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -16,12 +16,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (ctx && canvas) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-      elementsManager.draw(activeLayer); // Redraw the canvas
-    }
+    elementsManager.draw(activeLayer); // Redraw the canvas
   }, [activeLayer]);
 
   return (
