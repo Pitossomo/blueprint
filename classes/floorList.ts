@@ -12,17 +12,16 @@ export class FloorList implements IElementList<Floor> {
         this.elements.forEach(el => {el.draw(ctx)})
     }
 
-    add(newFloor: Floor) {
-        this.elements.push(newFloor);
-        this.elements.sort((a,b) => a.height - b.height)
-    }
-
     parseInput(input: string): void {
-        const [x,y,dx,dy,height] = input.split(',').map(parseFloat);
+        const newElements: Floor[] = []; 
+        const lines = input.split('\n');
+        
+        lines.forEach(line => {
+            const [x,y,dx,dy,height] = line.split(' ').map(parseFloat);
+            if ([x,y,dx,dy,height].some(isNaN)) return;
+            newElements.push(new Floor(x,y,dx,dy,height));
+        });
 
-        try {
-          this.add(new Floor(x,y,dx,dy,height));
-        } catch (e) {
-        }
+        this.elements = newElements
     }
 }
