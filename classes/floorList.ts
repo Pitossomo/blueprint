@@ -18,10 +18,8 @@ export class FloorList implements IElementList<Floor> {
         
         lines.forEach(line => {
             const [x,y,dx,dy,height] = line.split(' ').map(parseFloat);
-
-            try {
-                newElements.push(new Floor(x,y,dx,dy,height));
-            } catch (e) {}
+            if ([x,y,dx,dy,height].some(isNaN)) return;
+            newElements.push(new Floor(x,y,dx,dy,height));
         });
 
         this.elements = newElements
