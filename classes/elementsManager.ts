@@ -1,43 +1,31 @@
 import { RefObject } from "react";
-import { FloorList } from "./floorList";
+import { LAYERMAP } from "../app/consts/layerMap";
 import { SlabList } from "./slabList";
-import { Floor } from "./floor";
-
-export enum LayerType {
-    FLOORS = 'floorList',
-    SLABS = 'slabList'
-}
+import { FloorList } from "./floorList";
 
 export class ElementsManager {
     canvasRef: RefObject<HTMLCanvasElement | null>;
-    floorList: FloorList;
-    slabList: SlabList;
 
     constructor(canvasRef: RefObject<HTMLCanvasElement | null>) {
         this.canvasRef = canvasRef;
-        this.floorList = new FloorList();
-        this.slabList = new SlabList();
-        
-        // For testing purposes
-        /*
-        let floor0 = new Floor([],0)
-        this.floorList.add(floor0)
-        this.floorList.add(new Floor([],10))
-        this.floorList.add(new Floor([],20))
-        this.slabList.add(new Slab(50,50,300,300,floor0))
-        */
     }
 
-    addFloor(floor: Floor) {
-        this.floorList.add(floor);
+    draw(activeLayer: string) {
+        const canvas = this.canvasRef.current;
+        const ctx = canvas?.getContext('2d');
+        if (ctx && canvas) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+            LAYERMAP[activeLayer].list.elements.forEach(el => {el.draw(ctx)});
+        }
     }
 
-    draw(activeLayer: LayerType) {
-        const ctx = this.canvasRef.current?.getContext('2d');
-        if (ctx) this[activeLayer].draw(ctx);
+    handleInput(activeLayer: string, input: string) {
+        LAYERMAP[activeLayer].list.parseInput(input);
+        this.draw(activeLayer);
     }
 
-    parseInput(input: string) {
-        //TODO
+    generateSlabs(activeLayer: string) {
+        (LAYERMAP.SLABS.list as SlabList).generateSlabs(LAYERMAP.FLOORS.list as FloorList);
+        this.draw(activeLayer);
     }
 }

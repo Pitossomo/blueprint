@@ -1,40 +1,39 @@
 "use client";
 
-import { ElementsManager, LayerType } from "@/classes/elementsManager";
-import { useState, useRef, ChangeEvent } from "react";
+import { ElementsManager } from "@/classes/elementsManager";
+import { useState, useRef, ChangeEvent, useEffect } from "react";
 import Toolbar from "./components/toolbar";
+import { LAYERMAP } from "@/app/consts/layerMap";
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const elementsManager = new ElementsManager(canvasRef);
-  const [inputValue, setInputValue] = useState<string>('');
-  const [activeLayer, setActiveLayer] = useState<LayerType>(LayerType.FLOORS);
-
-  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    const input = e.target.value;
-    setInputValue(input);
-  };
+  const [activeLayer, setActiveLayer] = useState<string>("FLOORS");
 
   const handleLayerChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    const selectedLayer = e.target.value as LayerType;
+    const selectedLayer = e.target.value;
     setActiveLayer(selectedLayer)
   };
 
-  const layerTypes = Object.values(LayerType);
+  useEffect(() => {
+    elementsManager.draw(activeLayer); // Redraw the canvas
+  }, [activeLayer]);
 
   return (
     <div className="w-full h-screen p-4">
       <h1 className="text-2xl font-bold mb-4">Desenhe Formas Geométricas</h1>
 
-      <canvas
-        className="border border-gray-300 rounded w-full"
-        width="1000" height="300"
-        ref={canvasRef}
-      />
+      <div className="relative border border-gray-300 rounded w-full overflow-hidden">
+        <canvas
+          className="w-full h-full"
+          width="1000" height="600"
+          ref={canvasRef}
+        />
+      </div>
 
       <select className="p-4 border border-gray my-2" onChange={handleLayerChange}>
-        { layerTypes.map(layer => (
-          <option key={layer} value={layer}>{layer}</option>
+        { Object.entries(LAYERMAP).map(([layerKey, layerObj]) => (
+          <option key={layerKey} value={layerKey}>{layerObj.label}</option>
         ))}
       </select>
 
