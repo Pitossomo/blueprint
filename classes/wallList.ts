@@ -8,17 +8,18 @@ export class WallList {
         this.elements.forEach(el => {el.draw(ctx)})
     }
 
-    add(newSlab: Wall) {
-        this.elements.push(newSlab);
-        this.elements.sort((a, b) => a.start.x - b.start.x || a.end.y - b.end.y)
-    }
-
     parseInput(input: string): void {
-        const [x1, y1, x2, y2] = input.split(',').map(parseFloat);
+        const newElements: Wall[] = []; 
+        const lines = input.split('\n');
+        
+        lines.forEach(line => {
+            const [x1, y1, x2, y2] = line.split(' ').map(parseFloat);
 
-        try {
-          this.add(new Wall(new Point2D(x1, y1), new Point2D(x2, y2)));
-        } catch (e) {
-        }
+            try { 
+                newElements.push(new Wall(new Point2D(x1, y1), new Point2D(x2, y2)));
+            } catch (e) {}
+        });
+
+        this.elements = newElements
     }
 }
