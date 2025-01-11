@@ -18,32 +18,12 @@ export class SlabList {
         const lines = input.split('\n');
 
         lines.forEach(line => {
-            const [x,y,dx,dy,height,direction] = line.split(' ');
-        
-            let slabDirection: SlabDirection;
-            switch (direction.toUpperCase()) {
-                case "X":
-                    slabDirection = SlabDirection.X;
-                    break;
-                case "Y":
-                    slabDirection = SlabDirection.Y;
-                    break;
-                default:
-                    slabDirection = this.generateSlabDirection(parseFloat(dx), parseFloat(dy));                
-            }
-    
-            try {
-                newSlabs.push(new Slab(
-                    parseFloat(x),
-                    parseFloat(y),
-                    parseFloat(dx),
-                    parseFloat(dy),
-                    parseFloat(height),
-                    slabDirection
-                ));
-            } catch (e) {}
-        });
+            const [x,y,dx,dy,height] = line.split(' ').map(parseFloat);
+            if ([x,y,dx,dy,height].some(isNaN)) return;
 
+            let slabDirection = this.generateSlabDirection(dx, dy);                
+            newSlabs.push(new Slab(x, y, dx, dy, height, slabDirection));
+        });
         this.elements = newSlabs;
     }
 
