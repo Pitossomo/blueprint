@@ -1,7 +1,7 @@
 import { ElementsManager } from "@/classes/elementsManager";
 import { LAYERMAP } from "@/app/consts/layerMap";
 import { ChangeEvent, useState } from "react";
-import { ToolbarButton } from "./toolbarButton";
+import ToolbarButton from "./toolbarButton";
 
 type ToolbarProps = {
     elementsManager: ElementsManager;
