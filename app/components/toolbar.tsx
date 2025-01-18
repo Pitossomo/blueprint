@@ -1,33 +1,31 @@
-import { ElementsManager } from "@/classes/elementsManager";
-import { LAYERMAP } from "@/app/consts/layerMap";
-import { ChangeEvent, useState } from "react";
+import { useRef } from "react";
 import ToolbarButton from "./toolbarButton";
+import { Layer } from "@/classes/layer";
 
 type ToolbarProps = {
-    elementsManager: ElementsManager;
-    activeLayer: string;
+    getInput: () => string;
+    generateSlabs: () => void;
+    redraw: (input: string) => void;
+    activeLayer: Layer;
 }
 
-export default function Toolbar({elementsManager, activeLayer}: ToolbarProps) {
-    const [pathInput, setPathInput] = useState('');
-
-    const handlePathInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => { setPathInput(e.target.value); };
-    const handleInput = () => { elementsManager.handleInput(activeLayer, pathInput) };
-    const generateSlabs = () => { elementsManager.generateSlabs(activeLayer) };
-
+export default function Toolbar({generateSlabs, redraw, getInput, activeLayer}: ToolbarProps) {
+    const input = getInput();
+    const textAreaRef = useRef<HTMLTextAreaElement>(null)
+    
     return (
         <div>
             <nav className="flex justify-left items-center p-2 bg-gray-200">
-                <ToolbarButton onClick={handleInput}> Atualizar desenho </ToolbarButton>
+                <ToolbarButton onClick={() => { redraw(textAreaRef.current?.value || '')}}> Atualizar desenho </ToolbarButton>
                 <ToolbarButton onClick={generateSlabs}> Gerar lajes </ToolbarButton>
             </nav>
 
             <div className="mb-2 p-2 border border-gray-300 rounded w-full text-gray-400">
-                <p>{LAYERMAP[activeLayer].helperText}</p>
+                <p>{activeLayer.getHelperText()}</p>
                 <textarea
                     className="no-border w-full focus:outline-none text-gray-500"
-                    value={pathInput}
-                    onChange={handlePathInputChange}
+                    defaultValue={input}
+                    ref={textAreaRef}
                 />
             </div>
         </div>
