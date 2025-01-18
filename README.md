@@ -4,10 +4,10 @@ This project is a simple web application that allows users to draw slabs and gen
 
 ## Features
 
-- [x] Input slabs via textarea
-- [x] Draw slabs on a canvas
-- [x] Generate beams from slabs and display them in a second textarea
-- [ ] TODO: Implement floor levels
+- ✅ Input slabs via textarea
+- ✅ Draw slabs on a canvas
+- ✅ Implement floor levels
+- [ ] Generate beams from slabs
 
 ## Technologies Used
 
