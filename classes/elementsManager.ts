@@ -1,31 +1,37 @@
 import { RefObject } from "react";
-import { LAYERMAP } from "../app/consts/layerMap";
 import { SlabList } from "./slabList";
 import { FloorList } from "./floorList";
+import { Level } from "./level";
+import { Layer } from "./layer";
+import { LAYER_MAP } from "@/app/consts/layerMap";
 
 export class ElementsManager {
-    canvasRef: RefObject<HTMLCanvasElement | null>;
+    private canvasRef: RefObject<HTMLCanvasElement | null>;
 
     constructor(canvasRef: RefObject<HTMLCanvasElement | null>) {
         this.canvasRef = canvasRef;
     }
 
-    draw(activeLayer: string) {
+    draw(activeLayer: Layer, activeLevel: Level) {
         const canvas = this.canvasRef.current;
         const ctx = canvas?.getContext('2d');
         if (ctx && canvas) {
             ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-            LAYERMAP[activeLayer].list.elements.forEach(el => {el.draw(ctx)});
+            activeLayer.getList().getElements().forEach(el => {el.draw(ctx, activeLevel)});
         }
     }
 
-    handleInput(activeLayer: string, input: string) {
-        LAYERMAP[activeLayer].list.parseInput(input);
-        this.draw(activeLayer);
+    handleInput(input: string, activeLayer: Layer, activeLevel: Level) {
+        activeLayer.getList().parseInput(input, activeLevel);
+        this.draw(activeLayer, activeLevel);
     }
 
-    generateSlabs(activeLayer: string) {
-        (LAYERMAP.SLABS.list as SlabList).generateSlabs(LAYERMAP.FLOORS.list as FloorList);
-        this.draw(activeLayer);
+    getInput(activeLayer: Layer, activeLevel: Level) {
+        const input = activeLayer.getList().getInput(activeLevel); 
+        return input;
+    }
+
+    generateSlabs() {
+        (LAYER_MAP.SLABS.getList() as SlabList).generateSlabs(LAYER_MAP.FLOORS.getList() as FloorList);
     }
 }
