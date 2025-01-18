@@ -1,19 +1,21 @@
 import { SlabDirection } from "@/app/enums/SlabDirection";
 import { FloorList } from "./floorList";
 import { Slab } from "./slab";
+import { Level } from "./level";
+import { IElementList } from "@/app/interfaces/iElementList";
 
-export class SlabList {
-    elements: Slab[] = [];
+export class SlabList implements IElementList<Slab> {
+    private elements: Slab[] = [];
     
-    draw (ctx: CanvasRenderingContext2D) {
-        this.elements.forEach(el => {el.draw(ctx)})
+    draw (ctx: CanvasRenderingContext2D, activeLevel: Level): void {
+        this.elements.forEach(el => {el.draw(ctx, activeLevel)})
     }
 
     private generateSlabDirection(dx: number, dy: number): SlabDirection  {
         return dx < dy ? SlabDirection.X : SlabDirection.Y;
     }
     
-    parseInput(input: string): void {
+    parseInput(input: string, activeLevel: Level): void {
         const newSlabs: Slab[] = []; 
         const lines = input.split('\n');
 
@@ -22,9 +24,16 @@ export class SlabList {
             if ([x,y,dx,dy,height].some(isNaN)) return;
 
             let slabDirection = this.generateSlabDirection(dx, dy);                
-            newSlabs.push(new Slab(x, y, dx, dy, height, slabDirection));
+            newSlabs.push(new Slab(x, y, dx, dy, activeLevel, height, slabDirection));
         });
         this.elements = newSlabs;
+    }
+
+    getInput(activeLevel: Level): string {
+        return this.elements.map(el => (el.getLevel() !== activeLevel)
+            ? ''
+            : `${el.getX()} ${el.getY()} ${el.getDX()} ${el.getDY()} ${el.getHeight()}`
+        ).join('\n');
     }
 
     generateSlabs(floorList: FloorList): void {
@@ -32,14 +41,17 @@ export class SlabList {
         this.elements = [];
         floorList.elements.forEach(floor => {
             newSlabs.push(new Slab(
-                floor.x,
-                floor.y,
-                floor.dx,
-                floor.dy,
-                floor.height,
-                this.generateSlabDirection(floor.dx, floor.dy)
+                floor.getX(),
+                floor.getY(),
+                floor.getDX(),
+                floor.getDY(),
+                floor.getLevel(),
+                floor.getHeight(),
+                this.generateSlabDirection(floor.getDX(), floor.getDY())
             ));
         });
         this.elements = newSlabs;
     }
+
+    getElements(): Slab[] { return this.elements; }    
 }
