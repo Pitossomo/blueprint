@@ -1,7 +1,9 @@
+import { Level } from "@/classes/level";
 import { IElement } from "./iElement";
 
 export interface IElementList<T extends IElement> {
-    elements: T[]
-    draw(ctx: CanvasRenderingContext2D): void;
-    parseInput(input: string): void;
+    draw(ctx: CanvasRenderingContext2D, activeLevel: Level): void;
+    parseInput(input: string, activeLevel: Level): void;
+    getInput(activeLevel: Level): string;
+    getElements(): T[];
 }
