@@ -7,11 +7,11 @@ This project is a simple web application that allows users to draw slabs and gen
 - ✅ Input slabs via textarea
 - ✅ Draw slabs on a canvas
 - ✅ Implement floor levels
-- ❌ Generate beams from slabs
+- ❌ Implement beams and generate them from slabs 
 - ❌ Implement forces and calculate their distributions
-- ❌ Generate columns
+- ❌ Implement columns and generate 
 - ❌ Design and calculate structural pieces
-- ❌ Implement foundations
+- ❌ Implement foundations and generate them from columns
 - ❌ Implement stairs
 
 ## Technologies Used
