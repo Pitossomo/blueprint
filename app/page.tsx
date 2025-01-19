@@ -2,23 +2,24 @@
 
 import { ElementsManager } from "@/classes/elementsManager";
 import { useState, useRef, ChangeEvent, useEffect } from "react";
-import Toolbar from "./components/toolbar";
 import SelectInput from "./components/selectInput";
 import { Level } from "@/classes/level";
 import { LAYER_MAP } from "@/app/consts/layerMap";
 import { LEVEL_LIST } from "@/app/consts/levelMap";
 import { Layer } from "@/classes/layer";
+import ToolbarButton from "./components/toolbarButton";
 
 export default function Home() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+	const commandLineRef = useRef<HTMLTextAreaElement>(null);
   	const elementsManager = new ElementsManager(canvasRef);
   	const [activeLayer, setActiveLayer] = useState<Layer>(LAYER_MAP["FLOORS"]);
   	const [activeLevel, setActiveLevel] = useState<Level>(LEVEL_LIST[0]);
+	const [commandLineInput, setCommandLineInput] = useState<string>('');
 	
 	const handleLayerChange = (e: ChangeEvent<HTMLSelectElement>): void => {
 		const selectedLayerName = e.target.value;
 		const selectedLayer = LAYER_MAP[selectedLayerName];
-		console.log(selectedLayer);
     	setActiveLayer(selectedLayer)
 	};
 
@@ -30,12 +31,19 @@ export default function Home() {
 		elementsManager.generateSlabs();
 		elementsManager.draw(activeLayer, activeLevel);
 	}
-	const redraw = (input:string) => { elementsManager.handleInput(input, activeLayer, activeLevel); }
+	const redraw = () => { 
+		elementsManager.handleInput(
+			commandLineRef.current?.value || '',
+			activeLayer,
+			activeLevel
+		);
+	}
+
 	const getInput = () => { return elementsManager.getInput(activeLayer, activeLevel); }
 
 	useEffect(() => {
-    	elementsManager.draw(activeLayer, activeLevel); // Redraw the canvas
-		elementsManager.getInput(activeLayer, activeLevel);
+    	elementsManager.draw(activeLayer, activeLevel);
+		setCommandLineInput(getInput());
 	}, [activeLayer, activeLevel]);
 
 	return (
@@ -59,7 +67,23 @@ export default function Home() {
         		</SelectInput>
       		</div>
 
-			<Toolbar generateSlabs={generateSlabs} redraw={redraw} activeLayer={activeLayer} getInput={getInput} />
+			<div>
+				<nav className="flex justify-left items-center p-2 bg-gray-200">
+					<ToolbarButton onClick={redraw}> Atualizar desenho </ToolbarButton>
+					<ToolbarButton onClick={generateSlabs}> Gerar lajes </ToolbarButton>
+				</nav>
+
+				<div className="mb-2 p-2 border border-gray-300 rounded w-full text-gray-400">
+					<p>{activeLayer.getHelperText()}</p>
+					<textarea
+						className="no-border w-full focus:outline-none text-gray-500"
+						onChange={(e) => setCommandLineInput(e.target.value)}
+						value={commandLineInput}
+						ref={commandLineRef}
+					/>
+				</div>
+			</div>
+
     	</div>
   	);
 }
