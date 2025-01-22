@@ -4,6 +4,8 @@ import { FloorList } from "./floorList";
 import { Level } from "./level";
 import { Layer } from "./layer";
 import { LAYER_MAP } from "@/app/consts/layerMap";
+import { BeamList } from "./beamList";
+import { WallList } from "./wallList";
 
 export class ElementsManager {
     private canvasRef: RefObject<HTMLCanvasElement | null>;
@@ -33,5 +35,9 @@ export class ElementsManager {
 
     generateSlabs() {
         (LAYER_MAP.SLABS.getList() as SlabList).generateSlabs(LAYER_MAP.FLOORS.getList() as FloorList);
+    }
+
+    generateBeams() {
+        (LAYER_MAP.BEAMS.getList() as BeamList).generateBeams(LAYER_MAP.FLOORS.getList() as FloorList, LAYER_MAP.WALLS.getList() as WallList);
     }
 }
