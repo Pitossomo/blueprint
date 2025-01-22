@@ -9,6 +9,7 @@ This project is a simple web application that allows users to draw slabs and gen
 - ✅ Implement floor levels
 - ✅ Implement beams and generate them from floors and walls
 - ❌ Implement beam sections, supports and intersections 
+- ❌ Add overlapping verification for iElements implementations
 - ❌ Implement forces and calculate their distributions
 - ❌ Implement columns and generate 
 - ❌ Design and calculate structural pieces
