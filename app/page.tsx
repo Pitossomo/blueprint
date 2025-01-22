@@ -17,20 +17,36 @@ export default function Home() {
   	const [activeLevel, setActiveLevel] = useState<Level>(LEVEL_LIST[0]);
 	const [commandLineInput, setCommandLineInput] = useState<string>('');
 	
-	const handleLayerChange = (e: ChangeEvent<HTMLSelectElement>): void => {
+	useEffect(() => {
+    	elementsManager.draw(activeLayer, activeLevel);
+		setCommandLineInput(getInput());
+	}, [activeLayer, activeLevel]);
+
+	function handleLayerChange (e: ChangeEvent<HTMLSelectElement>): void {
 		const selectedLayerName = e.target.value;
 		const selectedLayer = LAYER_MAP[selectedLayerName];
     	setActiveLayer(selectedLayer)
 	};
 
-	const handleFloorLevelChange = (e: ChangeEvent<HTMLSelectElement>): void => {
+	function handleFloorLevelChange (e: ChangeEvent<HTMLSelectElement>): void {
     	const selectedLevel = LEVEL_LIST[parseInt(e.target.value)];
     	setActiveLevel(selectedLevel);
 	}
-	const generateSlabs = () => { 
+
+	function generateSlabs () { 
 		elementsManager.generateSlabs();
-		elementsManager.draw(activeLayer, activeLevel);
+		if (activeLayer === LAYER_MAP["SLABS"]) {
+			elementsManager.draw(activeLayer, activeLevel);
+		}
 	}
+
+	function generateBeams(): void {
+		elementsManager.generateBeams();
+		if (activeLayer === LAYER_MAP["BEAMS"]) {
+			elementsManager.draw(activeLayer, activeLevel);
+		}
+	}
+
 	const redraw = () => { 
 		elementsManager.handleInput(
 			commandLineRef.current?.value || '',
@@ -40,11 +56,6 @@ export default function Home() {
 	}
 
 	const getInput = () => { return elementsManager.getInput(activeLayer, activeLevel); }
-
-	useEffect(() => {
-    	elementsManager.draw(activeLayer, activeLevel);
-		setCommandLineInput(getInput());
-	}, [activeLayer, activeLevel]);
 
 	return (
     	<div className="w-full h-screen p-4">
@@ -71,6 +82,7 @@ export default function Home() {
 				<nav className="flex justify-left items-center p-2 bg-gray-200">
 					<ToolbarButton onClick={redraw}> Atualizar desenho </ToolbarButton>
 					<ToolbarButton onClick={generateSlabs}> Gerar lajes </ToolbarButton>
+					<ToolbarButton onClick={generateBeams}> Gerar vigas </ToolbarButton>
 				</nav>
 
 				<div className="mb-2 p-2 border border-gray-300 rounded w-full text-gray-400">
