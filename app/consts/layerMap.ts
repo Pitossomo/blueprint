@@ -1,3 +1,4 @@
+import { BeamList } from "@/classes/beamList";
 import { FloorList } from "../../classes/floorList";
 import { Layer } from "../../classes/layer";
 import { SlabList } from "../../classes/slabList";
@@ -7,4 +8,5 @@ export const LAYER_MAP: Record<string,Layer> = {
     FLOORS: new Layer("Pisos", "Formato: x0 y0 dx dy h", new FloorList()),
     SLABS: new Layer("Lajes", "Formato: x0 y0 dx dy h X/Y", new SlabList()), 
     WALLS: new Layer("Paredes", "Formato: x1 y1 x2 y2", new WallList()),
+    BEAMS: new Layer("Vigas", "Formato: x1 y1 x2 y2 h", new BeamList())
 }
