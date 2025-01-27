@@ -41,6 +41,7 @@ export class Beam implements IElement {
     getX2(): number { return this.x2; }
     getY1(): number { return this.y1; }
     getY2(): number { return this.y2; }
+    getLinearCoefficient(): number { return (this.y2 - this.y1)/(this.x2 - this.y1) }
     getLevel(): Level { return this.level; }
     getHeightFromLevel(): number { return this.heightFromLevel; }
 }
