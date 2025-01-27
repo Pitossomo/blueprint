@@ -10,10 +10,8 @@ export class Beam implements IElement {
     heightFromLevel: any;
     
     constructor(x1: number, y1: number, x2: number, y2: number, heightFromLevel: number, level: Level) {
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
+        this.x1 = Math.min(x1,x2);
+        [this.y1,this.x2,this.y2] = (x1 === this.x1) ? [y1,x2,y2] : [y2,x1,y1];
         this.level = level;
         this.heightFromLevel = heightFromLevel;
     }
@@ -41,7 +39,9 @@ export class Beam implements IElement {
     getX2(): number { return this.x2; }
     getY1(): number { return this.y1; }
     getY2(): number { return this.y2; }
-    getLinearCoefficient(): number { return (this.y2 - this.y1)/(this.x2 - this.y1) }
+    getLinearCoefficient(): number { return (this.y2 - this.y1)/(this.x2 - this.x1) }
+    getX0(): number { return this.x1 - this.y1/this.getLinearCoefficient() }
+    getY0(): number { return this.y1 - this.getLinearCoefficient()*this.x1}
     getLevel(): Level { return this.level; }
     getHeightFromLevel(): number { return this.heightFromLevel; }
 }
