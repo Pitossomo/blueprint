@@ -1,7 +1,7 @@
 import { Beam } from "./beam";
 import { Level } from "./level";
 
-const OFFSET = 20;
+const OFFSET = 10;
 
 export class BeamIntersection {
     private underBeam: Beam;
@@ -19,9 +19,7 @@ export class BeamIntersection {
     }
 
     draw(ctx: CanvasRenderingContext2D, activeLevel: Level): void {
-
         if (activeLevel !== this.level) return;
-
         ctx.beginPath();
         ctx.moveTo(this.x - OFFSET, this.y - OFFSET);
         ctx.lineTo(this.x + OFFSET, this.y + OFFSET);
