@@ -3,12 +3,15 @@ import { Beam } from "./beam";
 import { Level } from "./level";
 import { WallList } from "./wallList";
 import { FloorList } from "./floorList";
+import { BeamIntersection } from "./beamIntersection";
 
 export class BeamList implements IElementList<Beam> {
     private elements: Beam[] = [];
+    private intersections: BeamIntersection[] = [];
     
     draw (ctx: CanvasRenderingContext2D, activeLevel: Level): void {
         this.elements.forEach(el => {el.draw(ctx, activeLevel)})
+        this.intersections.forEach(el => el.draw(ctx, activeLevel))
     }
 
     parseInput(input: string, activeLevel: Level): void {
@@ -33,46 +36,67 @@ export class BeamList implements IElementList<Beam> {
     getElements(): Beam[] { return this.elements; }
 
     generateBeams(floorList: FloorList, wallList: WallList): void {
-            const newBeams: Beam[] = [];
+        const newBeams: Beam[] = [];
+        
+        this.elements = [];
+        floorList.elements.forEach(floor => {
+            const x1 = floor.getX();
+            const x2 = floor.getX() + floor.getDX();
+            const y1 = floor.getY();
+            const y2 = floor.getY() + floor.getDY();
+            const level = floor.getLevel();
+            const height = floor.getHeight();
             
-            this.elements = [];
-            floorList.elements.forEach(floor => {
-                const x1 = floor.getX();
-                const x2 = floor.getX() + floor.getDX();
-                const y1 = floor.getY();
-                const y2 = floor.getY() + floor.getDY();
-                const level = floor.getLevel();
-                const height = floor.getHeight();
-                
-                let newFloorBeams = [
-                    new Beam(x1, y1, x1, y2, height, level),
-                    new Beam(x1, y2, x2, y2, height, level),
-                    new Beam(x2, y2, x2, y1, height, level),
-                    new Beam(x2, y1, x1, y1, height, level)
-                ];
-                newFloorBeams.forEach(newBeam => {
-                    if (!newBeams.some(b => b.equals(newBeam))) newBeams.push(newBeam);
-                })
-            });
+            let newFloorBeams = [
+                new Beam(x1, y1, x1, y2, height, level),
+                new Beam(x1, y2, x2, y2, height, level),
+                new Beam(x2, y2, x2, y1, height, level),
+                new Beam(x2, y1, x1, y1, height, level)
+            ];
+            newFloorBeams.forEach(newBeam => {
+                if (!newBeams.some(b => b.equals(newBeam))) newBeams.push(newBeam);
+            })
+        });
 
-            wallList.getElements().forEach(wall => {
-                const x1 = wall.getX1();
-                const x2 = wall.getX2();
-                const y1 = wall.getY1();
-                const y2 = wall.getY2();
-                const level = wall.getLevel();
-                
-                let newWallBeams = [
-                    new Beam(x1, y1, x1, y2, 0, level),
-                    new Beam(x1, y2, x2, y2, 0, level),
-                    new Beam(x2, y2, x2, y1, 0, level),
-                    new Beam(x2, y1, x1, y1, 0, level)
-                ];
-                newWallBeams.forEach(newBeam => {
-                    if (!newBeams.some(b => b.equals(newBeam))) newBeams.push(newBeam);
-                })
-            });
+        wallList.getElements().forEach(wall => {
+            const x1 = wall.getX1();
+            const x2 = wall.getX2();
+            const y1 = wall.getY1();
+            const y2 = wall.getY2();
+            const level = wall.getLevel();
+            
+            let newWallBeams = [
+                new Beam(x1, y1, x1, y2, 0, level),
+                new Beam(x1, y2, x2, y2, 0, level),
+                new Beam(x2, y2, x2, y1, 0, level),
+                new Beam(x2, y1, x1, y1, 0, level)
+            ];
+            newWallBeams.forEach(newBeam => {
+                if (!newBeams.some(b => b.equals(newBeam))) newBeams.push(newBeam);
+            })
+        });
 
-            this.elements = newBeams;
-        }
+        this.elements = newBeams;
+        this.generateIntersections();
+    }
+
+    generateIntersections(): BeamIntersection[] {
+        const intersections:BeamIntersection[] = []
+        this.elements.forEach((beam, i) => {
+            const m = beam.getLinearCoefficient()
+            const y1 = beam.getY1()
+
+            console.log(beam)
+
+            this.elements.slice(i+1)?.forEach(otherBeam => {
+                const n = otherBeam.getLinearCoefficient()
+                if (Math.abs(m) === Math.abs(n)) return;
+
+                const x = (y1 - otherBeam.getY1())/(n - m)
+                const y = y1 + m*x
+                intersections.push(new BeamIntersection(x,y,beam,otherBeam)) 
+            })
+        })
+        return intersections;
+    }
 }
