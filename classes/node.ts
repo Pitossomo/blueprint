@@ -17,4 +17,15 @@ export class Node {
     getY() { return this.y }
     getLevel() { return this.level }
     getHeight() { return this.height }
+    drawIntersection(ctx: CanvasRenderingContext2D, activeLevel: Level): void {
+        const OFFSET = 10;
+        if (activeLevel !== this.level) return;
+        ctx.beginPath();
+        ctx.moveTo(this.getX() - OFFSET, this.getY() - OFFSET);
+        ctx.lineTo(this.getX() + OFFSET, this.getY() + OFFSET);
+        ctx.stroke();
+        ctx.moveTo(this.getX() - OFFSET, this.getY() + OFFSET);
+        ctx.lineTo(this.getX() + OFFSET, this.getY() - OFFSET);
+        ctx.stroke();
+    }
 }
