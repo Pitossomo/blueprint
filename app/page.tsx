@@ -61,7 +61,7 @@ export default function Home() {
     	<div className="w-full h-screen p-4">
       		<h1 className="text-2xl font-bold mb-4">Desenhe Formas Geométricas</h1>
     		<div className="relative border border-gray-300 rounded w-full overflow-hidden">
-        		<canvas width="1000" height="400" ref={canvasRef} />
+        		<canvas width="600" height="400" ref={canvasRef} />
       		</div>
 
 			<div className="flex">
@@ -92,6 +92,7 @@ export default function Home() {
 						onChange={(e) => setCommandLineInput(e.target.value)}
 						value={commandLineInput}
 						ref={commandLineRef}
+						rows={8}
 					/>
 				</div>
 			</div>
