@@ -3,15 +3,15 @@ import { Beam } from "./beam";
 import { Level } from "./level";
 import { WallList } from "./wallList";
 import { FloorList } from "./floorList";
-import { BeamIntersection } from "./beamIntersection";
+import { Node } from "./node";
 
 export class BeamList implements IElementList<Beam> {
     private elements: Beam[] = [];
-    private intersections: BeamIntersection[] = [];
+    private intersections: Node[] = [];
     
     draw (ctx: CanvasRenderingContext2D, activeLevel: Level): void {
         this.elements.forEach(el => {el.draw(ctx, activeLevel)})
-        this.intersections.forEach(el => el.draw(ctx, activeLevel))
+        this.intersections.forEach(el => el.drawIntersection(ctx, activeLevel))
     }
 
     parseInput(input: string, activeLevel: Level): void {
@@ -82,7 +82,7 @@ export class BeamList implements IElementList<Beam> {
     }
 
     generateIntersections() {
-        const intersections:BeamIntersection[] = []
+        const intersections: Node[] = []
         this.elements.forEach((beam, i) => {
             // beam equation: y = y0 + mx 
             const m = beam.getLinearCoefficient()
@@ -108,7 +108,14 @@ export class BeamList implements IElementList<Beam> {
                 }
                 
                 console.log(x,y)
-                intersections.push(new BeamIntersection(x,y,beam,otherBeam)) 
+                intersections.push(
+                    new Node(
+                        x,
+                        y,
+                        Math.min(beam.getHeightFromLevel(), otherBeam.getHeightFromLevel()),
+                        beam.getLevel()
+                    )
+                ) 
             })
         })
         this.intersections = intersections;
