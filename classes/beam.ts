@@ -47,6 +47,68 @@ export class Beam implements IElement {
         );
     }
 
+    overlaps(other:Beam) {
+        console.log('overlaps')
+        const orientation = (p: Node, q: Node, r: Node): number => {
+            const val = (q.getY() - p.getY()) * (r.getX() - q.getX()) - (q.getX() - p.getX()) * (r.getY() - q.getY());
+            if (val === 0) return 0; // collinear
+            return (val > 0) ? 1 : 2; // clock or counterclock wise
+        }
+
+        const onSegment = (p: Node, q: Node, r: Node): boolean => {
+            if (q.getX() <= Math.max(p.getX(), r.getX()) && q.getX() >= Math.min(p.getX(), r.getX()) &&
+            q.getY() <= Math.max(p.getY(), r.getY()) && q.getY() >= Math.min(p.getY(), r.getY())) {
+            return true;
+            }
+            return false;
+        }
+
+        const doIntersect = (p1: Node, q1: Node, p2: Node, q2: Node): boolean => {
+            const o1 = orientation(p1, q1, p2);
+            const o2 = orientation(p1, q1, q2);
+            const o3 = orientation(p2, q2, p1);
+            const o4 = orientation(p2, q2, q1);
+
+            if (o1 !== o2 && o3 !== o4) return true;
+
+            if (o1 === 0 && onSegment(p1, p2, q1)) return true;
+            if (o2 === 0 && onSegment(p1, q2, q1)) return true;
+            if (o3 === 0 && onSegment(p2, p1, q2)) return true;
+            if (o4 === 0 && onSegment(p2, q1, q2)) return true;
+
+            return false;
+        }
+
+        const intersect = doIntersect(this.nodes[0], this.nodes[1], other.nodes[0], other.nodes[1]);
+        return intersect
+    }
+    
+    getIntersection(otherBeam:Beam): Node | null {
+        if (this.level !== otherBeam.level) return null;
+
+        const m = this.getLinearCoefficient()
+        const x01 = this.getX0()
+        const y01 = this.getY0()
+        const n = otherBeam.getLinearCoefficient();
+        
+        if (Math.abs(m) === Math.abs(n)) return null;
+
+        const x02 = otherBeam.getX0();
+        const y02 = otherBeam.getY0();
+
+        let x:number, y:number;
+        if (m === Infinity || m === -Infinity) {
+            [x, y] = [x01, y02 + x01*n]
+        } else if (n === Infinity || n === -Infinity) {
+            [x, y] = [x02, y01 + x02*m]
+        } else {
+            x = (y01 - y02)/(n - m);
+            y = y01 + m*x;    
+        }
+
+        return new Node(x, y, Math.min(this.heightFromLevel, otherBeam.heightFromLevel), this.level)   
+    }
+
     addNode(newNode: Node) {
         this.nodes.push(newNode)
         this.nodes.sort((a,b) => {
