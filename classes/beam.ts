@@ -86,13 +86,13 @@ export class Beam implements IElement {
     getIntersection(otherBeam:Beam): Node | null {
         if (this.level !== otherBeam.level) return null;
 
+        // beam equation: y = y0 + mx 
         const m = this.getLinearCoefficient()
         const x01 = this.getX0()
         const y01 = this.getY0()
         const n = otherBeam.getLinearCoefficient();
         
         if (Math.abs(m) === Math.abs(n)) return null;
-
         const x02 = otherBeam.getX0();
         const y02 = otherBeam.getY0();
 
@@ -105,8 +105,27 @@ export class Beam implements IElement {
             x = (y01 - y02)/(n - m);
             y = y01 + m*x;    
         }
+        
+        console.log(x,y)
 
-        return new Node(x, y, Math.min(this.heightFromLevel, otherBeam.heightFromLevel), this.level)   
+        //if (!this.contains(x,y) || !otherBeam.contains(x,y)) return null
+        return new Node(
+            x,
+            y,
+            Math.min(this.heightFromLevel, otherBeam.heightFromLevel),
+            this.level
+        )   
+    }
+
+    contains(x: number, y: number): boolean {
+        const m = this.getLinearCoefficient();
+        const yRef = this.getY0() + m*x
+        if (yRef !== y) return false;
+
+        if ((Math.abs(m) === Infinity) && (y < this.y1 || y > this.y2)) return false
+        if (x < this.x1 || x > this.x2) return false
+        
+        return true
     }
 
     addNode(newNode: Node) {
