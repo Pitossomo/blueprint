@@ -8,12 +8,14 @@ import { LAYER_MAP } from "@/app/consts/layerMap";
 import { LEVEL_LIST } from "@/app/consts/levelMap";
 import { Layer } from "@/classes/layer";
 import ToolbarButton from "./components/toolbarButton";
+import { IElementList } from "./interfaces/iElementList";
+import { IElement } from "./interfaces/iElement";
 
 export default function Home() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 	const commandLineRef = useRef<HTMLTextAreaElement>(null);
   	const elementsManager = new ElementsManager(canvasRef);
-  	const [activeLayer, setActiveLayer] = useState<Layer>(LAYER_MAP["FLOORS"]);
+  	const [activeLayer, setActiveLayer] = useState<Layer<IElementList<IElement>>>(LAYER_MAP.floors);
   	const [activeLevel, setActiveLevel] = useState<Level>(LEVEL_LIST[0]);
 	const [commandLineInput, setCommandLineInput] = useState<string>('');
 	
@@ -24,7 +26,7 @@ export default function Home() {
 
 	function handleLayerChange (e: ChangeEvent<HTMLSelectElement>): void {
 		const selectedLayerName = e.target.value;
-		const selectedLayer = LAYER_MAP[selectedLayerName];
+		const selectedLayer = LAYER_MAP.getLayer(selectedLayerName);
     	setActiveLayer(selectedLayer)
 	};
 
@@ -35,14 +37,14 @@ export default function Home() {
 
 	function generateSlabs () { 
 		elementsManager.generateSlabs();
-		if (activeLayer === LAYER_MAP["SLABS"]) {
+		if (activeLayer === LAYER_MAP.slabs) {
 			elementsManager.draw(activeLayer, activeLevel);
 		}
 	}
 
 	function generateBeams(): void {
 		elementsManager.generateBeams();
-		if (activeLayer === LAYER_MAP["BEAMS"]) {
+		if (activeLayer === LAYER_MAP.beams) {
 			elementsManager.draw(activeLayer, activeLevel);
 		}
 	}
@@ -66,7 +68,7 @@ export default function Home() {
 
 			<div className="flex">
 				<SelectInput label="Selecione a camada:" onChange={handleLayerChange}>
-					{ Object.entries(LAYER_MAP).map(([layerKey, layerObj]) => (
+					{ LAYER_MAP.getEntries().map(([layerKey, layerObj]) => (
 						<option key={layerKey} value={layerKey}>{layerObj.getLabel()}</option>
           			))}
         		</SelectInput>
@@ -96,7 +98,6 @@ export default function Home() {
 					/>
 				</div>
 			</div>
-
     	</div>
   	);
 }
