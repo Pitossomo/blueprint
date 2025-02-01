@@ -22,6 +22,51 @@ This project is a simple web application that allows users to draw slabs and gen
 - TypeScript
 - HTML5 Canvas
 
+## Class Diagram
+
+```mermaid
+classDiagram
+    class LayerMap {
+      -floors: Layer
+      -slabs: Layer
+      -walls: Layer
+      -beams: Layer
+      -layers: Record<string, Layer>
+      +getLayer(): Layer
+      +getEntries(): [string,Layer]
+    }
+    
+    class ElementManager {
+      -RefObject canvasRef
+      +draw(Layer, Level)
+      +handleInput(String, Layer, Level)
+      +getInput(Layer, Level)
+      +generateSlabs()
+      +generateBeams()
+    }
+    
+    class Layer {
+      -label: string 
+      -helperText: string
+      -list: IElementList<IElement>
+      +setLabel()
+      +getLabel(): string
+      +setHelperText(string)
+      +getHelperText(): string
+      +getList(): IElementList<IElement>
+    }
+    
+    class Level {
+      -height: number
+      -name: string
+      +getHeight(): number
+      +getName(): string
+    }
+    
+    ElementManager "1" -- "1" LayerMap : uses
+    LayerMap "1" -- "n" Layer : has
+```
+
 ----------
 
 # Projeto de Desenho Estrutural
