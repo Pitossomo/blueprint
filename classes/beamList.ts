@@ -84,41 +84,11 @@ export class BeamList implements IElementList<Beam> {
     generateIntersections() {
         const intersections: Node[] = []
         this.elements.forEach((beam, i) => {
-            // beam equation: y = y0 + mx 
-            const m = beam.getLinearCoefficient()
-            const x01 = beam.getX0()
-            const y01 = beam.getY0()
-
-            this.elements.slice(i+1)?.forEach((otherBeam,j,arr) => {
-                console.log(beam, arr[j])
-                const n = otherBeam.getLinearCoefficient();
-                if (Math.abs(m) === Math.abs(n)) return;
-
-                const x02 = otherBeam.getX0();
-                const y02 = otherBeam.getY0();
-
-                let x:number, y:number;
-                if (m === Infinity || m === -Infinity) {
-                    [x, y] = [x01, y02 + x01*n]
-                } else if (n === Infinity || n === -Infinity) {
-                    [x, y] = [x02, y01 + x02*m]
-                } else {
-                    x = (y01 - y02)/(n - m);
-                    y = y01 + m*x;    
-                }
-                
-                console.log(x,y)
-                intersections.push(
-                    new Node(
-                        x,
-                        y,
-                        Math.min(beam.getHeightFromLevel(), otherBeam.getHeightFromLevel()),
-                        beam.getLevel()
-                    )
-                ) 
+            this.elements.slice(i+1)?.forEach(otherBeam => {
+                const intersection = beam.getIntersection(otherBeam)
+                if (intersection) intersections.push(intersection)
             })
         })
         this.intersections = intersections;
-        console.log(intersections)
     }
 }
