@@ -1,12 +1,12 @@
 import { IElement } from "@/app/interfaces/iElement";
 import { IElementList } from "@/app/interfaces/iElementList";
 
-export class Layer {
+export class Layer<T extends IElementList<IElement>> {
     private label: string;
     private helperText: string;
-    private list: IElementList<IElement>;
+    private list: T;
 
-    constructor(label: string, helperText: string, list: IElementList<IElement>) {
+    constructor(label: string, helperText: string, list: T) {
         this.label = label;
         this.helperText = helperText;
         this.list = list;
