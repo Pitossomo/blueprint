@@ -23,7 +23,7 @@ export class Beam implements IElement {
             this.heightFromLevel = heightFromLevel;
             this.nodes = [
                 new Node(this.x1, this.y1, this.heightFromLevel, this.level),
-                 new Node(this.x2, this.y2, this.heightFromLevel, this.level)
+                new Node(this.x2, this.y2, this.heightFromLevel, this.level)
             ]
     }
 
@@ -48,7 +48,6 @@ export class Beam implements IElement {
     }
 
     overlaps(other:Beam) {
-        console.log('overlaps')
         const orientation = (p: Node, q: Node, r: Node): number => {
             const val = (q.getY() - p.getY()) * (r.getX() - q.getX()) - (q.getX() - p.getX()) * (r.getY() - q.getY());
             if (val === 0) return 0; // collinear
@@ -83,8 +82,8 @@ export class Beam implements IElement {
         return intersect
     }
     
-    getIntersection(otherBeam:Beam): Node | null {
-        if (this.level !== otherBeam.level) return null;
+    getIntersection(otherBeam:Beam): Node | void {
+        if (this.level !== otherBeam.level) return;
 
         // beam equation: y = y0 + mx 
         const m = this.getLinearCoefficient()
@@ -92,7 +91,7 @@ export class Beam implements IElement {
         const y01 = this.getY0()
         const n = otherBeam.getLinearCoefficient();
         
-        if (Math.abs(m) === Math.abs(n)) return null;
+        if (Math.abs(m) === Math.abs(n)) return;
         const x02 = otherBeam.getX0();
         const y02 = otherBeam.getY0();
 
@@ -106,21 +105,19 @@ export class Beam implements IElement {
             y = y01 + m*x;    
         }
         
-        console.log(x,y)
-
-        //if (!this.contains(x,y) || !otherBeam.contains(x,y)) return null
-        return new Node(
+        if (this.contains(x,y) && otherBeam.contains(x,y)) return new Node(
             x,
             y,
             Math.min(this.heightFromLevel, otherBeam.heightFromLevel),
             this.level
-        )   
+        ) 
     }
 
     contains(x: number, y: number): boolean {
+        const TOLERANCE = 0.0001;
         const m = this.getLinearCoefficient();
         const yRef = this.getY0() + m*x
-        if (yRef !== y) return false;
+        if (Math.abs(yRef - y) > TOLERANCE) return false;
 
         if ((Math.abs(m) === Infinity) && (y < this.y1 || y > this.y2)) return false
         if (x < this.x1 || x > this.x2) return false
