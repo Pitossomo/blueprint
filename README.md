@@ -7,7 +7,16 @@ This project is a simple web application that allows users to draw slabs and gen
 - ✅ Input slabs via textarea
 - ✅ Draw slabs on a canvas
 - ✅ Implement floor levels
-- ❌ Implement beams and generate them from slabs 
+- ✅ Implement beams and generate them from floors
+- ✅ Implement walls and generate them from floors and walls
+- ✅ Define and draw beam intersections
+- ❌ Implement superficial loads
+- ❌ Implement linear loads
+- ❌ Implement punctual loads
+- ❌ Exhibit many layers at once
+- ❌ Implement sublayers
+- ❌ Implement beam sections and supports
+- ❌ Add overlapping verification for iElements implementations
 - ❌ Implement forces and calculate their distributions
 - ❌ Implement columns and generate 
 - ❌ Design and calculate structural pieces
@@ -19,6 +28,51 @@ This project is a simple web application that allows users to draw slabs and gen
 - React
 - TypeScript
 - HTML5 Canvas
+
+## Class Diagram
+
+```mermaid
+classDiagram
+    class LayerMap {
+      -floors: Layer
+      -slabs: Layer
+      -walls: Layer
+      -beams: Layer
+      -layers: Record<string, Layer>
+      +getLayer(): Layer
+      +getEntries(): [string,Layer]
+    }
+    
+    class ElementManager {
+      -RefObject canvasRef
+      +draw(Layer, Level)
+      +handleInput(String, Layer, Level)
+      +getInput(Layer, Level)
+      +generateSlabs()
+      +generateBeams()
+    }
+    
+    class Layer {
+      -label: string 
+      -helperText: string
+      -list: IElementList<IElement>
+      +setLabel()
+      +getLabel(): string
+      +setHelperText(string)
+      +getHelperText(): string
+      +getList(): IElementList<IElement>
+    }
+    
+    class Level {
+      -height: number
+      -name: string
+      +getHeight(): number
+      +getName(): string
+    }
+    
+    ElementManager "1" -- "1" LayerMap : uses
+    LayerMap "1" -- "n" Layer : has
+```
 
 ----------
 
