@@ -1,6 +1,7 @@
 import { SlabDirection } from "@/app/enums/SlabDirection";
 import { IElement } from "../app/interfaces/iElement";
 import { Level } from "./level";
+import SuperficialLoad from "./superficialLoad";
 
 export class Slab implements IElement {
     private x: number;
@@ -10,6 +11,7 @@ export class Slab implements IElement {
     private height: number;
     private direction: SlabDirection;
     private level: Level;
+    private load?: SuperficialLoad;
     
     constructor(x: number, y: number, dx: number, dy: number, level: Level, height: number, slabDirection: SlabDirection) {
         this.x = x;
@@ -42,4 +44,5 @@ export class Slab implements IElement {
     getHeight(): number { return this.height; }
     getLevel(): Level { return this.level; }
     getDirection(): SlabDirection { return this.direction; }
+    getLoad(): SuperficialLoad | undefined { return this.load }
 }
