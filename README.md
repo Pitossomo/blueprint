@@ -10,7 +10,7 @@ This project is a simple web application that allows users to draw slabs and gen
 - ✅ Implement beams and generate them from floors
 - ✅ Implement walls and generate them from floors and walls
 - ✅ Define and draw beam intersections
-- ❌ Implement superficial loads linked to slabs
+- ✅ Implement superficial loads linked to slabs
 - ❌ Implement linear loads
 - ❌ Implement punctual loads
 - ❌ Exhibit many layers at once
