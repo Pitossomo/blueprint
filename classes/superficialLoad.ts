@@ -3,9 +3,12 @@ export class SuperficialLoad {
     accidental: number;
 
     constructor(permanent: number, accidental: number) {
-        this.permanent = permanent;
-        this.accidental = accidental;
+        this.permanent = permanent || 0;
+        this.accidental = accidental || 0;
     }
+
+    getPermanentLoad(): number { return this.permanent }
+    getAccidentalLoad(): number { return this.accidental }
 }
 
 export default SuperficialLoad;
