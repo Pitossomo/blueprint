@@ -20,11 +20,13 @@ export class SlabList implements IElementList<Slab> {
         const lines = input.split('\n');
 
         lines.forEach(line => {
-            const [x,y,dx,dy,height] = line.split(' ').map(parseFloat);
+            const [x,y,dx,dy,height,permanentLoad,accidentalLoad] = line.split(' ').map(parseFloat);
             if ([x,y,dx,dy,height].some(isNaN)) return;
 
-            let slabDirection = this.generateSlabDirection(dx, dy);                
-            newSlabs.push(new Slab(x, y, dx, dy, activeLevel, height, slabDirection));
+            let slabDirection = this.generateSlabDirection(dx, dy);
+            const newSlab = new Slab(x, y, dx, dy, activeLevel, height, slabDirection, permanentLoad, accidentalLoad);
+
+            newSlabs.push(newSlab)
         });
         this.elements = newSlabs;
     }
@@ -32,7 +34,7 @@ export class SlabList implements IElementList<Slab> {
     getInput(activeLevel: Level): string {
         return this.elements.map(el => (el.getLevel() !== activeLevel)
             ? ''
-            : `${el.getX()} ${el.getY()} ${el.getDX()} ${el.getDY()} ${el.getHeight()}`
+            : `${el.getX()} ${el.getY()} ${el.getDX()} ${el.getDY()} ${el.getHeight()} ${el.getPermanentLoad()} ${el.getAccidentalLoad()}`
         ).join('\n');
     }
 
@@ -47,7 +49,9 @@ export class SlabList implements IElementList<Slab> {
                 floor.getDY(),
                 floor.getLevel(),
                 floor.getHeight(),
-                this.generateSlabDirection(floor.getDX(), floor.getDY())
+                this.generateSlabDirection(floor.getDX(), floor.getDY()),
+                0,
+                0
             ));
         });
         this.elements = newSlabs;
