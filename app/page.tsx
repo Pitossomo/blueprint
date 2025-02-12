@@ -10,6 +10,9 @@ import { Layer } from "@/classes/layer";
 import ToolbarButton from "./components/toolbarButton";
 import { IElementList } from "./interfaces/iElementList";
 import { IElement } from "./interfaces/iElement";
+import dynamic from "next/dynamic";
+
+const Canvas = dynamic(() => import("./components/canvas"), {ssr: false});
 
 export default function Home() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -62,10 +65,8 @@ export default function Home() {
 	return (
     	<div className="w-full h-screen p-4">
       		<h1 className="text-2xl font-bold mb-4">Desenhe Formas Geométricas</h1>
-    		<div className="relative border border-gray-300 rounded w-full overflow-hidden">
-        		<canvas width="600" height="400" ref={canvasRef} />
-      		</div>
-
+    		<Canvas canvasRef={canvasRef} />
+      		
 			<div className="flex">
 				<SelectInput label="Selecione a camada:" onChange={handleLayerChange}>
 					{ LAYER_MAP.getEntries().map(([layerKey, layerObj]) => (
