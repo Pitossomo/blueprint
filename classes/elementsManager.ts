@@ -15,10 +15,32 @@ export class ElementsManager {
     draw(activeLayer: Layer<IElementList<IElement>>, activeLevel: Level) {
         const canvas = this.canvasRef.current;
         const ctx = canvas?.getContext('2d');
-        if (ctx && canvas) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-            activeLayer.getList().draw(ctx, activeLevel);
+        if (!ctx || !canvas) return
+       
+        // Get bounding box
+        const boundingBox = activeLayer.getList().getBoundingBox()
+
+        // Transform
+        if (boundingBox) {
+            // TODO - Implement Offset on canvas' bounding box 
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+
+            // Calculate scale factor to fit bounding box within canvas
+            const scaleX = canvasWidth / boundingBox.getWidth();
+            const scaleY = canvasHeight / boundingBox.getHeight();
+            const scale = Math.min(scaleX, scaleY); // Choose the smaller scale factor
+
+            const centerX = (canvasWidth - boundingBox.getWidth() * scale) / 2 - boundingBox.getX() * scale;
+            const centerY = (canvasHeight - boundingBox.getHeight() * scale) / 2 - boundingBox.getY() * scale;
+
+            ctx.setTransform(scale, 0, 0, scale, centerX, centerY);
         }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+        activeLayer.getList().draw(ctx, activeLevel);
+
+
     }
 
     handleInput(input: string, activeLayer: Layer<IElementList<IElement>>, activeLevel: Level) {
