@@ -21,26 +21,25 @@ export class ElementsManager {
         const boundingBox = activeLayer.getList().getBoundingBox()
 
         // Transform
-        if (boundingBox) {
-            // TODO - Implement Offset on canvas' bounding box 
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
+        if (!boundingBox) return;
 
-            // Calculate scale factor to fit bounding box within canvas
-            const scaleX = canvasWidth / boundingBox.getWidth();
-            const scaleY = canvasHeight / boundingBox.getHeight();
-            const scale = Math.min(scaleX, scaleY); // Choose the smaller scale factor
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
 
-            const centerX = (canvasWidth - boundingBox.getWidth() * scale) / 2 - boundingBox.getX() * scale;
-            const centerY = (canvasHeight - boundingBox.getHeight() * scale) / 2 - boundingBox.getY() * scale;
+        // Calculate scale factor to fit bounding box within canvas
+        
+        // TODO - make margin offset
 
-            ctx.setTransform(scale, 0, 0, scale, centerX, centerY);
-        }
+        const scaleX = canvasWidth / boundingBox.getWidth();
+        const scaleY = canvasHeight / boundingBox.getHeight();
+        const scale = Math.min(scaleX, scaleY); // Choose the smaller scale factor
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+        const centerX = (canvasWidth - boundingBox.getWidth() * scale) / 2 - boundingBox.getX() * scale;
+        const centerY = (canvasHeight - boundingBox.getHeight() * scale) / 2 - boundingBox.getY() * scale;
+
+        ctx.reset()
+        ctx.setTransform(scale, 0, 0, scale, centerX, centerY);
         activeLayer.getList().draw(ctx, activeLevel);
-
-
     }
 
     handleInput(input: string, activeLayer: Layer<IElementList<IElement>>, activeLevel: Level) {
