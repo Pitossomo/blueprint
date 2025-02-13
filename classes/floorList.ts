@@ -1,9 +1,9 @@
-import { IElementList } from "@/app/interfaces/iElementList";
-import { Floor } from "./floor";
-import { Level } from "./level";
-import { BoundingBox } from "./boundingBox";
+import IElementList from "@/app/interfaces/iElementList";
+import Floor from "./floor";
+import Level from "./level";
+import BoundingBox from "./boundingBox";
 
-export class FloorList implements IElementList<Floor> {
+export default class FloorList implements IElementList<Floor> {
     elements: Floor[];
     
     constructor() {

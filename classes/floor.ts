@@ -1,7 +1,7 @@
-import { IElement } from "../app/interfaces/iElement"
-import { Level } from "./level";
+import IElement from "../app/interfaces/iElement"
+import Level from "./level";
 
-export class Floor implements IElement{
+export default class Floor implements IElement{
     private x: number;
     private y: number;
     private dx: number;

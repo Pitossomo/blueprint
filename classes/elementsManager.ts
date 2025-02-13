@@ -1,11 +1,11 @@
 import { RefObject } from "react";
-import { Level } from "./level";
-import { Layer } from "./layer";
+import Level from "./level";
+import Layer from "./layer";
 import { LAYER_MAP } from "@/app/consts/layerMap";
-import { IElementList } from "@/app/interfaces/iElementList";
-import { IElement } from "@/app/interfaces/iElement";
+import IElementList from "@/app/interfaces/iElementList";
+import IElement from "@/app/interfaces/iElement";
 
-export class ElementsManager {
+export default class ElementsManager {
     private canvasRef: RefObject<HTMLCanvasElement | null>;
 
     constructor(canvasRef: RefObject<HTMLCanvasElement | null>) {
@@ -21,6 +21,7 @@ export class ElementsManager {
         const boundingBox = activeLayer.getList().getBoundingBox()
 
         // Transform
+        ctx.reset()
         if (!boundingBox) return;
 
         const canvasWidth = canvas.width;
@@ -28,8 +29,6 @@ export class ElementsManager {
 
         // Calculate scale factor to fit bounding box within canvas
         
-        // TODO - make margin offset
-
         const scaleX = canvasWidth / boundingBox.getWidth();
         const scaleY = canvasHeight / boundingBox.getHeight();
         const scale = Math.min(scaleX, scaleY); // Choose the smaller scale factor
@@ -37,7 +36,6 @@ export class ElementsManager {
         const centerX = (canvasWidth - boundingBox.getWidth() * scale) / 2 - boundingBox.getX() * scale;
         const centerY = (canvasHeight - boundingBox.getHeight() * scale) / 2 - boundingBox.getY() * scale;
 
-        ctx.reset()
         ctx.setTransform(scale, 0, 0, scale, centerX, centerY);
         activeLayer.getList().draw(ctx, activeLevel);
     }

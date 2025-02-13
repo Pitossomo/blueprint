@@ -1,6 +1,6 @@
-import { Level } from "./level";
+import Level from "./level";
 
-export class Wall {
+export default class Wall {
     private x1: number;
     private x2: number;
     private y1: number;

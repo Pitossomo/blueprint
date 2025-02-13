@@ -1,14 +1,19 @@
-export class BoundingBox {
+const MARGIN_OFFSET = 0.05;
+
+export default class BoundingBox {
     private minX: number;
     private minY: number;
     private maxX: number;
     private maxY: number;
 
     constructor(minX: number, minY: number, maxX: number, maxY: number) {
-        this.minX = minX;
-        this.minY = minY;
-        this.maxX = maxX;
-        this.maxY = maxY;
+        const dx = maxX - minX;
+        const dy = maxY - minY;
+
+        this.minX = minX - MARGIN_OFFSET*dx;
+        this.minY = minY - MARGIN_OFFSET*dy;
+        this.maxX = maxX + MARGIN_OFFSET*dx;
+        this.maxY = maxY + MARGIN_OFFSET*dy;
     }
 
     contains(x: number, y: number): boolean {
@@ -36,5 +41,3 @@ export class BoundingBox {
     getWidth(): number { return this.maxX - this.minX }
     getHeight(): number { return this.maxY - this.minY }
 }
-
-export default BoundingBox;

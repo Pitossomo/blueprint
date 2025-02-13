@@ -1,4 +1,4 @@
-export class Level {
+export default class Level {
     private height: number;
     private name: string; 
 

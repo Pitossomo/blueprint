@@ -1,6 +1,6 @@
-import { Level } from "./level";
+import Level from "./level";
 
-export class Node {
+export default class Node {
     private x: number;
     private y: number;
     private level: Level;
