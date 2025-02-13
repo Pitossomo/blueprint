@@ -1,4 +1,4 @@
-export class SuperficialLoad {
+export default class SuperficialLoad {
     permanent: number;
     accidental: number;
 
@@ -10,5 +10,3 @@ export class SuperficialLoad {
     getPermanentLoad(): number { return this.permanent }
     getAccidentalLoad(): number { return this.accidental }
 }
-
-export default SuperficialLoad;

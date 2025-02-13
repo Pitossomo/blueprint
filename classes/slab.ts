@@ -1,9 +1,9 @@
 import { SlabDirection } from "@/app/enums/SlabDirection";
-import { IElement } from "../app/interfaces/iElement";
-import { Level } from "./level";
+import IElement from "../app/interfaces/iElement";
+import Level from "./level";
 import SuperficialLoad from "./superficialLoad";
 
-export class Slab implements IElement {
+export default class Slab implements IElement {
     private x: number;
     private y: number;
     private dx: number;

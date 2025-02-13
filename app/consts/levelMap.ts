@@ -1,4 +1,4 @@
-import { Level } from "@/classes/level"
+import Level from "@/classes/level"
 
 export const LEVEL_LIST: Level[] = [
     new Level("Térreo", 0),

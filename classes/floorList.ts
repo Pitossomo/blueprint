@@ -1,8 +1,9 @@
-import { IElementList } from "@/app/interfaces/iElementList";
-import { Floor } from "./floor";
-import { Level } from "./level";
+import IElementList from "@/app/interfaces/iElementList";
+import Floor from "./floor";
+import Level from "./level";
+import BoundingBox from "./boundingBox";
 
-export class FloorList implements IElementList<Floor> {
+export default class FloorList implements IElementList<Floor> {
     elements: Floor[];
     
     constructor() {
@@ -34,4 +35,18 @@ export class FloorList implements IElementList<Floor> {
     }
 
     getElements(): Floor[] { return this.elements; }
+    getBoundingBox(): BoundingBox | null {
+        if (this.elements.length === 0) return null;
+
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+        this.elements.forEach(slab => {
+            minX = Math.min(minX, slab.getX());
+            minY = Math.min(minY, slab.getY());
+            maxX = Math.max(maxX, slab.getX() + slab.getDX());
+            maxY = Math.max(maxY, slab.getY() + slab.getDY());
+        });
+
+        return new BoundingBox(minX, minY, maxX, maxY);
+    }
 }

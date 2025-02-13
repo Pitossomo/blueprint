@@ -1,7 +1,7 @@
-import { IElement } from "@/app/interfaces/iElement";
-import { IElementList } from "@/app/interfaces/iElementList";
+import IElement from "@/app/interfaces/iElement";
+import IElementList from "@/app/interfaces/iElementList";
 
-export class Layer<T extends IElementList<IElement>> {
+export default class Layer<T extends IElementList<IElement>> {
     private label: string;
     private helperText: string;
     private list: T;

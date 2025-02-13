@@ -1,8 +1,9 @@
-import { IElementList } from "@/app/interfaces/iElementList";
-import { Level } from "./level";
-import { Wall } from "./wall";
+import IElementList from "@/app/interfaces/iElementList";
+import Level from "./level";
+import Wall from "./wall";
+import BoundingBox from "./boundingBox";
 
-export class WallList implements IElementList<Wall> {
+export default class WallList implements IElementList<Wall> {
     private elements: Wall[] = [];
     
     draw = (ctx: CanvasRenderingContext2D) => {
@@ -29,4 +30,20 @@ export class WallList implements IElementList<Wall> {
     }
 
     getElements(): Wall[] { return this.elements; }
+
+    getBoundingBox(): BoundingBox | null {
+        if (this.elements.length === 0) return null;
+
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+        this.elements.forEach(beam => {
+            minX = Math.min(minX, beam.getX1());
+            minY = Math.min(minY, beam.getY1());
+            maxX = Math.max(maxX, beam.getX2());
+            maxY = Math.max(maxY, beam.getY2());
+        });
+
+        return new BoundingBox(minX, minY, maxX, maxY);
+    }
+
 }

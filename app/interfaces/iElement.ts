@@ -1,5 +1,5 @@
-import { Level } from "@/classes/level";
+import Level from "@/classes/level";
 
-export interface IElement {
+export default interface IElement {
     draw(ctx: CanvasRenderingContext2D, activeLevel: Level): void;
 }

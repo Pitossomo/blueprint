@@ -1,15 +1,18 @@
 "use client";
 
-import { ElementsManager } from "@/classes/elementsManager";
+import ElementsManager from "@/classes/elementsManager";
 import { useState, useRef, ChangeEvent, useEffect } from "react";
 import SelectInput from "./components/selectInput";
-import { Level } from "@/classes/level";
+import Level from "@/classes/level";
 import { LAYER_MAP } from "@/app/consts/layerMap";
 import { LEVEL_LIST } from "@/app/consts/levelMap";
-import { Layer } from "@/classes/layer";
+import Layer from "@/classes/layer";
 import ToolbarButton from "./components/toolbarButton";
-import { IElementList } from "./interfaces/iElementList";
-import { IElement } from "./interfaces/iElement";
+import IElementList from "./interfaces/iElementList";
+import IElement from "./interfaces/iElement";
+import dynamic from "next/dynamic";
+
+const Canvas = dynamic(() => import("./components/canvas"), {ssr: false});
 
 export default function Home() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -20,19 +23,18 @@ export default function Home() {
 	const [commandLineInput, setCommandLineInput] = useState<string>('');
 	
 	useEffect(() => {
-    	elementsManager.draw(activeLayer, activeLevel);
-		setCommandLineInput(getInput());
+		elementsManager.draw(activeLayer, activeLevel);
+		setCommandLineInput(getInput(activeLayer, activeLevel));
 	}, [activeLayer, activeLevel]);
 
 	function handleLayerChange (e: ChangeEvent<HTMLSelectElement>): void {
-		const selectedLayerName = e.target.value;
-		const selectedLayer = LAYER_MAP.getLayer(selectedLayerName);
-    	setActiveLayer(selectedLayer)
+		const selectedLayer = LAYER_MAP.getLayer(e.target.value);
+    	setActiveLayer(selectedLayer);
 	};
 
 	function handleFloorLevelChange (e: ChangeEvent<HTMLSelectElement>): void {
     	const selectedLevel = LEVEL_LIST[parseInt(e.target.value)];
-    	setActiveLevel(selectedLevel);
+		setActiveLevel(selectedLevel);
 	}
 
 	function generateSlabs () { 
@@ -57,15 +59,13 @@ export default function Home() {
 		);
 	}
 
-	const getInput = () => { return elementsManager.getInput(activeLayer, activeLevel); }
+	const getInput = (layer: Layer<IElementList<IElement>>, level: Level) => { return elementsManager.getInput(layer, level); }
 
 	return (
     	<div className="w-full h-screen p-4">
       		<h1 className="text-2xl font-bold mb-4">Desenhe Formas Geométricas</h1>
-    		<div className="relative border border-gray-300 rounded w-full overflow-hidden">
-        		<canvas width="600" height="400" ref={canvasRef} />
-      		</div>
-
+    		<Canvas canvasRef={canvasRef} />
+      		
 			<div className="flex">
 				<SelectInput label="Selecione a camada:" onChange={handleLayerChange}>
 					{ LAYER_MAP.getEntries().map(([layerKey, layerObj]) => (

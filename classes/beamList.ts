@@ -1,11 +1,12 @@
-import { IElementList } from "@/app/interfaces/iElementList";
-import { Beam } from "./beam";
-import { Level } from "./level";
-import { WallList } from "./wallList";
-import { FloorList } from "./floorList";
-import { Node } from "./node";
+import IElementList from "@/app/interfaces/iElementList";
+import Beam from "./beam";
+import Level from "./level";
+import WallList from "./wallList";
+import FloorList from "./floorList";
+import Node from "./node";
+import BoundingBox from "./boundingBox";
 
-export class BeamList implements IElementList<Beam> {
+export default class BeamList implements IElementList<Beam> {
     private elements: Beam[] = [];
     private intersections: Node[] = [];
     
@@ -90,5 +91,20 @@ export class BeamList implements IElementList<Beam> {
             })
         })
         this.intersections = intersections;
+    }
+
+    getBoundingBox(): BoundingBox | null {
+        if (this.elements.length === 0) return null;
+
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+        this.elements.forEach(beam => {
+            minX = Math.min(minX, beam.getX1());
+            minY = Math.min(minY, beam.getY1());
+            maxX = Math.max(maxX, beam.getX2());
+            maxY = Math.max(maxY, beam.getY2());
+        });
+
+        return new BoundingBox(minX, minY, maxX, maxY);
     }
 }

@@ -1,10 +1,10 @@
-import { BeamList } from "@/classes/beamList";
-import { FloorList } from "../../classes/floorList";
-import { Layer } from "../../classes/layer";
-import { SlabList } from "../../classes/slabList";
-import { WallList } from "../../classes/wallList";
-import { IElementList } from "../interfaces/iElementList";
-import { IElement } from "../interfaces/iElement";
+import BeamList from "@/classes/beamList";
+import FloorList from "../../classes/floorList";
+import Layer from "../../classes/layer";
+import SlabList from "../../classes/slabList";
+import WallList from "../../classes/wallList";
+import IElementList from "../interfaces/iElementList";
+import IElement from "../interfaces/iElement";
 
 class LayerMap {
     readonly floors: Layer<FloorList>;
