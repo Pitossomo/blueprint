@@ -1,8 +1,8 @@
-import { IElement } from "@/app/interfaces/iElement";
-import { Level } from "./level";
-import { Node } from './node'
+import IElement from "@/app/interfaces/iElement";
+import Level from "./level";
+import Node from './node'
 
-export class Beam implements IElement {
+export default class Beam implements IElement {
     private x1: number;
     private y1: number;
     private x2: number;
