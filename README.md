@@ -12,9 +12,12 @@ This project is a simple web application that allows users to draw slabs and gen
 - ✅ Define and draw beam intersections
 - ✅ Implement superficial loads linked to slabs
 - ✅ Zoom and centralize drawing on canvas
-- ❌ Implement linear loads
-- ❌ Implement punctual loads
+- ✅ Implement linear loads
+- ✅ Implement punctual loads
 - ❌ Implement columns and generate them from beams
+- ❌ Implement room uses
+- ❌ Implement iElement weights
+- ❌ Implement iElement dimensions
 - ❌ Exhibit many layers at once
 - ❌ Implement sublayers
 - ❌ Implement beam sections and supports
