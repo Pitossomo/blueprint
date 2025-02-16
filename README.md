@@ -15,12 +15,14 @@ This project is a simple web application that allows users to draw slabs and gen
 - ✅ Implement linear loads
 - ✅ Implement punctual loads
 - ❌ Implement columns and generate them from beams
+- ❌ Copy elements for all floors
 - ❌ Implement room uses
 - ❌ Implement iElement weights
 - ❌ Implement iElement dimensions
 - ❌ Exhibit many layers at once
 - ❌ Implement sublayers
 - ❌ Implement beam sections and supports
+- ❌ Draw elements in Three.js
 - ❌ Add overlapping verification for iElements implementations
 - ❌ Calculate effects their distributions
 - ❌ Design and calculate structural pieces
