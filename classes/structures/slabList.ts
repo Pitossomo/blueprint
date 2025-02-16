@@ -1,9 +1,9 @@
 import { SlabDirection } from "@/app/enums/SlabDirection";
-import FloorList from "./floorList";
+import FloorList from "../floorList";
 import Slab from "./slab";
-import Level from "./level";
+import Level from "../level";
 import IElementList from "@/app/interfaces/iElementList";
-import BoundingBox from "./boundingBox";
+import BoundingBox from "../boundingBox";
 
 export default class SlabList implements IElementList<Slab> {
     private elements: Slab[] = [];
