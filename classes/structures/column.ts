@@ -1,6 +1,6 @@
 import IElement from "@/app/interfaces/iElement";
 import Level from "../level";
-import Node from '../node'
+import { ColumnStatusInLevel } from "@/app/enums/ColumnStatusInLevel";
 
 export default class Column implements IElement {
     private x: number;
@@ -49,4 +49,13 @@ export default class Column implements IElement {
     getY1(): number { return this.y - this.dy/2; }
     getX2(): number { return this.x + this.dx/2; }
     getY2(): number { return this.y + this.dy/2; }
+    getLevelStatus(level: Level) {
+        if (level.getHeight() > this.topLevel.getHeight() || level.getHeight() < this.baseLevel.getHeight())
+            return ColumnStatusInLevel.NOT_PRESENT
+        if (level === this.baseLevel) return ColumnStatusInLevel.BASE_LEVEL
+        if (level === this.topLevel) return ColumnStatusInLevel.TOP_LEVEL
+        return ColumnStatusInLevel.MID_LEVEL
+    }
+    getTopLevel() { return this.topLevel }
+    getBaseLevel() { return this.baseLevel }
 }
