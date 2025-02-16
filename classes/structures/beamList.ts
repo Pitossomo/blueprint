@@ -1,10 +1,10 @@
 import IElementList from "@/app/interfaces/iElementList";
 import Beam from "./beam";
-import Level from "./level";
-import WallList from "./wallList";
-import FloorList from "./floorList";
-import Node from "./node";
-import BoundingBox from "./boundingBox";
+import Level from "../level";
+import WallList from "../wallList";
+import FloorList from "../floorList";
+import Node from "../node";
+import BoundingBox from "../boundingBox";
 
 export default class BeamList implements IElementList<Beam> {
     private elements: Beam[] = [];
