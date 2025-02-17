@@ -12,7 +12,7 @@ export default function Canvas ({canvasRef}: CanvasProps) {
             <canvas
                 className="border border-gray-300 rounded" 
                 width={containerRef.current?.clientWidth || window.innerWidth*0.95}
-                height={containerRef.current?.clientHeight || window.innerHeight/2}
+                height={window.innerHeight/2}
                 ref={canvasRef}
                 onResize={() => {
                     if (containerRef.current) {
