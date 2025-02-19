@@ -58,4 +58,7 @@ export default class Column implements IElement {
     }
     getTopLevel() { return this.topLevel }
     getBaseLevel() { return this.baseLevel }
+    setTopLevel(level: Level) {
+        this.topLevel = level
+    }
 }
