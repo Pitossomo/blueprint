@@ -57,4 +57,8 @@ export default class ElementsManager {
     generateBeams() {
         (LAYER_MAP.beams.getList()).generateBeams(LAYER_MAP.floors.getList(), LAYER_MAP.walls.getList());
     }
+
+    generateColumns() {
+        (LAYER_MAP.columns.getList()).generateColumns(LAYER_MAP.beams.getList())
+    }
 }
