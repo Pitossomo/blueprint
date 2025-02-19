@@ -14,12 +14,12 @@ This project is a simple web application that allows users to draw slabs and gen
 - ✅ Zoom and centralize drawing on canvas
 - ✅ Implement linear loads
 - ✅ Implement punctual loads
-- ❌ Implement columns and generate them from beams
+- ✅ Implement columns and generate them from beams
 - ❌ Copy elements for all floors
+- ❌ Exhibit many layers at once
 - ❌ Implement room uses
 - ❌ Implement iElement weights
 - ❌ Implement iElement dimensions
-- ❌ Exhibit many layers at once
 - ❌ Implement sublayers
 - ❌ Implement beam sections and supports
 - ❌ Draw elements in Three.js
