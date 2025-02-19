@@ -1,7 +1,5 @@
 import IElementList from "@/app/interfaces/iElementList";
-import Beam from "./beam";
 import Level from "../level";
-import Node from "../node";
 import BoundingBox from "../boundingBox";
 import Column from "./column";
 import { LEVEL_LIST } from "@/app/consts/levelMap";
@@ -15,7 +13,7 @@ export default class ColumnList implements IElementList<Column> {
         this.elements.forEach(el => {el.draw(ctx, activeLevel)})
     }
 
-    parseInput(input: string, activeLevel: Level): void {
+    parseInput(input: string): void {
         const newElements: Column[] = []; 
         const lines = input.split('\n');
         
@@ -30,14 +28,31 @@ export default class ColumnList implements IElementList<Column> {
     getInput(activeLevel: Level): string {
         return this.elements.map((el: Column) => (el.getLevelStatus(activeLevel) === ColumnStatusInLevel.NOT_PRESENT)
             ? ''
-            : `${el.getX()} ${el.getY()} ${el.getTopLevel().getIndex()} ${el.getBaseLevel().getIndex()}}`
+            : `${el.getX()} ${el.getY()} ${el.getTopLevel().getIndex()} ${el.getBaseLevel().getIndex()}`
         ).join('\n');
     }
 
     getElements(): Column[] { return this.elements; }
 
     generateColumns(beams: BeamList): void {
-        // TODO
+        const intersections = beams.getIntersections()
+        const columns: Column[] = []
+
+        let lastX = -1;
+        let lastY = -1;
+
+        intersections.forEach(node => {
+            const [nodeX, nodeY, nodeLevel] = [node.getX(), node.getY(), node.getLevel()]
+            if (columns.length === 0 || lastX !== nodeX || lastY !== nodeY) { 
+                lastX = nodeX
+                lastY = nodeY
+                columns.push(new Column(nodeX, nodeY, nodeLevel, LEVEL_LIST[0]))
+                return
+            }
+            columns[columns.length - 1].setTopLevel(nodeLevel)
+        })
+
+        this.elements = columns
     }
 
     getBoundingBox(): BoundingBox | null {
