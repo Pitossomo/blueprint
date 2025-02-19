@@ -90,6 +90,11 @@ export default class BeamList implements IElementList<Beam> {
                 if (intersection) intersections.push(intersection)
             })
         })
+        intersections.sort((a, b) => (
+            a.getY() - b.getY()
+            || a.getX() - b.getX()
+            || a.getLevel().getHeight() - b.getLevel().getHeight()
+        ))
         this.intersections = intersections;
     }
 
@@ -106,5 +111,9 @@ export default class BeamList implements IElementList<Beam> {
         });
 
         return new BoundingBox(minX, minY, maxX, maxY);
+    }
+
+    getIntersections(): Node[] {
+        return this.intersections;
     }
 }
