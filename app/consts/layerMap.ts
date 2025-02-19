@@ -20,7 +20,7 @@ class LayerMap {
         this.slabs = new Layer("Lajes", "Formato: x0 y0 dx dy h X/Y", new SlabList());
         this.walls = new Layer("Paredes", "Formato: x1 y1 x2 y2", new WallList());
         this.beams = new Layer("Vigas", "Formato: x1 y1 x2 y2 h", new BeamList());
-        this.columns = new Layer("Pilares", "Formato: x y n°NívelInicial n°nívelFinal", new ColumnList());
+        this.columns = new Layer("Pilares", "Formato: x y n°_nível_final n°_nível_inicial", new ColumnList());
         this.layers = {
             floors: this.floors,
             slabs: this.slabs,
