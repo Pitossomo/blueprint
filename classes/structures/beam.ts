@@ -1,6 +1,6 @@
 import IElement from "@/app/interfaces/iElement";
-import Level from "./level";
-import Node from './node'
+import Level from "../level";
+import Node from '../node'
 
 export default class Beam implements IElement {
     private x1: number;

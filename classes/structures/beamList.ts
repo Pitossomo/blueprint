@@ -1,10 +1,10 @@
 import IElementList from "@/app/interfaces/iElementList";
 import Beam from "./beam";
-import Level from "./level";
-import WallList from "./wallList";
-import FloorList from "./floorList";
-import Node from "./node";
-import BoundingBox from "./boundingBox";
+import Level from "../level";
+import WallList from "../wallList";
+import FloorList from "../floorList";
+import Node from "../node";
+import BoundingBox from "../boundingBox";
 
 export default class BeamList implements IElementList<Beam> {
     private elements: Beam[] = [];
@@ -90,6 +90,11 @@ export default class BeamList implements IElementList<Beam> {
                 if (intersection) intersections.push(intersection)
             })
         })
+        intersections.sort((a, b) => (
+            a.getY() - b.getY()
+            || a.getX() - b.getX()
+            || a.getLevel().getHeight() - b.getLevel().getHeight()
+        ))
         this.intersections = intersections;
     }
 
@@ -106,5 +111,9 @@ export default class BeamList implements IElementList<Beam> {
         });
 
         return new BoundingBox(minX, minY, maxX, maxY);
+    }
+
+    getIntersections(): Node[] {
+        return this.intersections;
     }
 }

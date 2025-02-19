@@ -51,6 +51,13 @@ export default function Home() {
 		}
 	}
 
+	function generateColumns(): void {
+		elementsManager.generateColumns();
+		if (activeLayer === LAYER_MAP.beams) {
+			elementsManager.draw(activeLayer, activeLevel);
+		}
+	}
+
 	const redraw = () => { 
 		elementsManager.handleInput(
 			commandLineRef.current?.value || '',
@@ -85,6 +92,7 @@ export default function Home() {
 					<ToolbarButton onClick={redraw}> Atualizar desenho </ToolbarButton>
 					<ToolbarButton onClick={generateSlabs}> Gerar lajes </ToolbarButton>
 					<ToolbarButton onClick={generateBeams}> Gerar vigas </ToolbarButton>
+					<ToolbarButton onClick={generateColumns}> Gerar pilares </ToolbarButton>
 				</nav>
 
 				<div className="mb-2 p-2 border border-gray-300 rounded w-full text-gray-400">
