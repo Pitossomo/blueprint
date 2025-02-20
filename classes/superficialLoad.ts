@@ -1,6 +1,6 @@
 export default class SuperficialLoad {
-    permanent: number;
-    accidental: number;
+    private permanent: number;
+    private accidental: number;
 
     constructor(permanent: number, accidental: number) {
         this.permanent = permanent || 0;
