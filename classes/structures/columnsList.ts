@@ -26,10 +26,12 @@ export default class ColumnList implements IElementList<Column> {
     }
 
     getInput(activeLevel: Level): string {
-        return this.elements.map((el: Column) => (el.getLevelStatus(activeLevel) === ColumnStatusInLevel.NOT_PRESENT)
-            ? ''
-            : `${el.getX()} ${el.getY()} ${el.getTopLevel().getIndex()} ${el.getBaseLevel().getIndex()}`
-        ).join('\n');
+        const elements: string[] = []
+        this.elements.forEach(el => {
+            if (el.getLevelStatus(activeLevel) === ColumnStatusInLevel.NOT_PRESENT) return; 
+            elements.push(el.getInput())
+        })
+        return elements.join('\n');
     }
 
     getElements(): Column[] { return this.elements; }
@@ -69,4 +71,6 @@ export default class ColumnList implements IElementList<Column> {
 
         return new BoundingBox(minX, minY, maxX, maxY);
     }
+
+    copyToOtherLevels(activeLevel: Level): void { return }
 }
