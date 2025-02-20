@@ -26,4 +26,5 @@ export default class Wall {
     getY1(): number { return this.y1; }
     getY2(): number { return this.y2; }
     getLevel(): Level { return this.level; }
+    getInput(): string { return `${this.x1} ${this.y1} ${this.x2} ${this.y2}`}
 }
