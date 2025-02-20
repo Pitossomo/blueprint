@@ -46,7 +46,7 @@ export default class Slab implements IElement {
         if (!this.load) return;
 
         // Define the text to be drawn
-        const text = this.load.permanent+"\n"+this.load.accidental;
+        const text = this.load.getPermanentLoad()+"\n"+this.load.getAccidentalLoad();
 
         // Calculate text positions
         const lines = text.split('\n');
@@ -68,5 +68,6 @@ export default class Slab implements IElement {
     getDirection(): SlabDirection { return this.direction; }
     getPermanentLoad(): number { return this.load.getPermanentLoad() }
     getAccidentalLoad(): number { return this.load.getAccidentalLoad() }
-    setLoad(load: SuperficialLoad) { this.load = load } 
+    setLoad(load: SuperficialLoad) { this.load = load }
+    getInput(): string { return `${this.x} ${this.y} ${this.dx} ${this.dy} ${this.height} ${this.getPermanentLoad()} ${this.getAccidentalLoad()}` }
 }
