@@ -61,4 +61,5 @@ export default class Column implements IElement {
     setTopLevel(level: Level) {
         this.topLevel = level
     }
+    getInput(): string { return `${this.x} ${this.y} ${this.topLevel.getIndex()} ${this.baseLevel.getIndex()}` }
 }
