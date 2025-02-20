@@ -36,4 +36,5 @@ export default class Floor implements IElement{
     getDY(): number { return this.dy; }
     getHeight(): number { return this.height; }
     getLevel(): Level { return this.level; }
+    getInput(): string { return `${this.x} ${this.y} ${this.dx} ${this.dy} ${this.height}` }
 }
