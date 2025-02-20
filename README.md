@@ -15,8 +15,9 @@ This project is a simple web application that allows users to draw slabs and gen
 - ✅ Implement linear loads
 - ✅ Implement punctual loads
 - ✅ Implement columns and generate them from beams
-- ❌ Copy elements for all floors
+- ✅ Copy elements for all floors
 - ❌ Exhibit many layers at once
+- ❌ Turn command line into a table with each row linked to one element on the active layer
 - ❌ Implement room uses
 - ❌ Implement iElement weights
 - ❌ Implement iElement dimensions

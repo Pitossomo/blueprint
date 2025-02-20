@@ -4,6 +4,7 @@ import Slab from "./slab";
 import Level from "../level";
 import IElementList from "@/app/interfaces/iElementList";
 import BoundingBox from "../boundingBox";
+import { LEVEL_LIST } from "@/app/consts/levelMap";
 
 export default class SlabList implements IElementList<Slab> {
     private elements: Slab[] = [];
@@ -33,10 +34,12 @@ export default class SlabList implements IElementList<Slab> {
     }
 
     getInput(activeLevel: Level): string {
-        return this.elements.map(el => (el.getLevel() !== activeLevel)
-            ? ''
-            : `${el.getX()} ${el.getY()} ${el.getDX()} ${el.getDY()} ${el.getHeight()} ${el.getPermanentLoad()} ${el.getAccidentalLoad()}`
-        ).join('\n');
+        const elements: string[] = []
+        this.elements.forEach(el => {
+            if (el.getLevel() !== activeLevel) return; 
+            elements.push(el.getInput())
+        })
+        return elements.join('\n');
     }
 
     generateSlabs(floorList: FloorList): void {
@@ -73,4 +76,23 @@ export default class SlabList implements IElementList<Slab> {
 
         return new BoundingBox(minX, minY, maxX, maxY);
     }
+
+    copyToOtherLevels(activeLevel: Level): void {
+        const elements: Slab[] = []
+        this.elements.forEach(element => {
+            if (element.getLevel() !== activeLevel) return
+            
+            LEVEL_LIST.forEach(level => { elements.push(
+                new Slab(
+                    element.getX(),element.getY(),
+                    element.getDX(),element.getDY(),
+                    level,element.getHeight(),
+                    element.getDirection(),
+                    element.getPermanentLoad(),element.getAccidentalLoad()
+                )
+            )})
+        })
+        this.elements = elements
+    }
+    
 }

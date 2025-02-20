@@ -2,6 +2,7 @@ import IElementList from "@/app/interfaces/iElementList";
 import Floor from "./floor";
 import Level from "./level";
 import BoundingBox from "./boundingBox";
+import { LEVEL_LIST } from "@/app/consts/levelMap";
 
 export default class FloorList implements IElementList<Floor> {
     elements: Floor[];
@@ -28,10 +29,12 @@ export default class FloorList implements IElementList<Floor> {
     }
 
     getInput(activeLevel: Level): string {
-        return this.elements.map(el => (el.getLevel() === activeLevel)
-            ? `${el.getX()} ${el.getY()} ${el.getDX()} ${el.getDY()} ${el.getHeight()}`
-            : ''
-        ).join('\n');
+        const elements: string[] = []
+        this.elements.forEach(el => {
+            if (el.getLevel() !== activeLevel) return; 
+            elements.push(el.getInput())
+        })
+        return elements.join('\n');
     }
 
     getElements(): Floor[] { return this.elements; }
@@ -48,5 +51,17 @@ export default class FloorList implements IElementList<Floor> {
         });
 
         return new BoundingBox(minX, minY, maxX, maxY);
+    }
+
+    copyToOtherLevels(activeLevel: Level): void {
+        const elements: Floor[] = []
+        this.elements.forEach(element => {
+            if (element.getLevel() !== activeLevel) return
+            
+            LEVEL_LIST.forEach(level => { elements.push(
+                new Floor(element.getX(),element.getY(),element.getDX(),element.getDY(),level,element.getHeight())
+            )})
+        })
+        this.elements = elements
     }
 }

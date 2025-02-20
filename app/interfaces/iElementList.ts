@@ -8,4 +8,5 @@ export default interface IElementList<T extends IElement> {
     getInput(activeLevel: Level): string;
     getElements(): T[];
     getBoundingBox(): BoundingBox | null;
+    copyToOtherLevels(activeLevel: Level): void
 }

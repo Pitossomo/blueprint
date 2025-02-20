@@ -2,6 +2,7 @@ import IElementList from "@/app/interfaces/iElementList";
 import Level from "./level";
 import Wall from "./wall";
 import BoundingBox from "./boundingBox";
+import { LEVEL_LIST } from "@/app/consts/levelMap";
 
 export default class WallList implements IElementList<Wall> {
     private elements: Wall[] = [];
@@ -23,10 +24,12 @@ export default class WallList implements IElementList<Wall> {
     }
 
     getInput(activeLevel: Level): string {
-        return this.elements.map(el => (el.getLevel() === activeLevel)
-            ? `${el.getX1()} ${el.getY1()} ${el.getX2()} ${el.getY2()}`
-            : ''
-        ).join('\n');
+        const elements: string[] = []
+        this.elements.forEach(el => {
+            if (el.getLevel() !== activeLevel) return; 
+            elements.push(el.getInput())
+        })
+        return elements.join('\n');
     }
 
     getElements(): Wall[] { return this.elements; }
@@ -44,6 +47,18 @@ export default class WallList implements IElementList<Wall> {
         });
 
         return new BoundingBox(minX, minY, maxX, maxY);
+    }
+
+    copyToOtherLevels(activeLevel: Level): void {
+        const elements: Wall[] = []
+        this.elements.forEach(element => {
+            if (element.getLevel() !== activeLevel) return
+            
+            LEVEL_LIST.forEach(level => { elements.push(
+                new Wall(element.getX1(),element.getY1(),element.getX2(),element.getY2(),level)
+            )})
+        })
+        this.elements = elements
     }
 
 }

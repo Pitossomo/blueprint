@@ -7,10 +7,10 @@ import Level from "@/classes/level";
 import { LAYER_MAP } from "@/app/consts/layerMap";
 import { LEVEL_LIST } from "@/app/consts/levelMap";
 import Layer from "@/classes/layer";
-import ToolbarButton from "./components/toolbarButton";
 import IElementList from "./interfaces/iElementList";
 import IElement from "./interfaces/iElement";
 import dynamic from "next/dynamic";
+import Toolbar from "./components/toolbar";
 
 const Canvas = dynamic(() => import("./components/canvas"), {ssr: false});
 
@@ -37,26 +37,7 @@ export default function Home() {
 		setActiveLevel(selectedLevel);
 	}
 
-	function generateSlabs () { 
-		elementsManager.generateSlabs();
-		if (activeLayer === LAYER_MAP.slabs) {
-			elementsManager.draw(activeLayer, activeLevel);
-		}
-	}
-
-	function generateBeams(): void {
-		elementsManager.generateBeams();
-		if (activeLayer === LAYER_MAP.beams) {
-			elementsManager.draw(activeLayer, activeLevel);
-		}
-	}
-
-	function generateColumns(): void {
-		elementsManager.generateColumns();
-		if (activeLayer === LAYER_MAP.beams) {
-			elementsManager.draw(activeLayer, activeLevel);
-		}
-	}
+	const getInput = (layer: Layer<IElementList<IElement>>, level: Level) => { return elementsManager.getInput(layer, level); }
 
 	const redraw = () => { 
 		elementsManager.handleInput(
@@ -65,8 +46,6 @@ export default function Home() {
 			activeLevel
 		);
 	}
-
-	const getInput = (layer: Layer<IElementList<IElement>>, level: Level) => { return elementsManager.getInput(layer, level); }
 
 	return (
     	<div className="w-full h-screen p-4">
@@ -88,12 +67,12 @@ export default function Home() {
       		</div>
 
 			<div>
-				<nav className="flex justify-left items-center p-2 bg-gray-200">
-					<ToolbarButton onClick={redraw}> Atualizar desenho </ToolbarButton>
-					<ToolbarButton onClick={generateSlabs}> Gerar lajes </ToolbarButton>
-					<ToolbarButton onClick={generateBeams}> Gerar vigas </ToolbarButton>
-					<ToolbarButton onClick={generateColumns}> Gerar pilares </ToolbarButton>
-				</nav>
+				<Toolbar
+					elementsManager={elementsManager}
+					activeLayer={activeLayer}
+					activeLevel={activeLevel}
+					redraw={redraw}
+				/>	
 
 				<div className="mb-2 p-2 border border-gray-300 rounded w-full text-gray-400">
 					<p>{activeLayer.getHelperText()}</p>

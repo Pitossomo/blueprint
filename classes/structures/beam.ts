@@ -11,7 +11,7 @@ export default class Beam implements IElement {
     private heightFromLevel: any;
     private nodes: Node[];
     
-    constructor(x1: number, y1: number, x2: number, y2: number, heightFromLevel: number, level: Level) {
+    constructor(x1: number, y1: number, x2: number, y2: number, level: Level, heightFromLevel: number) {
         if (x1 === x2) {
             if (y1 === y2) throw Error;
             else [this.x1,this.y1,this.x2,this.y2] = [x1, Math.min(y1,y2), x2, Math.max(y1,y2)]
@@ -145,4 +145,5 @@ export default class Beam implements IElement {
     getLevel(): Level { return this.level; }
     getHeightFromLevel(): number { return this.heightFromLevel; }
     getNodes(): Node[] { return this.nodes }
+    getInput(): string { return `${this.x1} ${this.y1} ${this.x2} ${this.y2} ${this.heightFromLevel}`}
 }
