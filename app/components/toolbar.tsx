@@ -38,8 +38,7 @@ export default function Toolbar ({elementsManager, activeLayer, activeLevel, red
 
         function copyElements(): void {
             if (activeLayer === LAYER_MAP.columns) return
-
-            // TODO
+            activeLayer.getList().copyToOtherLevels(activeLevel)
         }
 
     return (
@@ -49,8 +48,8 @@ export default function Toolbar ({elementsManager, activeLayer, activeLevel, red
             <ToolbarButton onClick={generateBeams}> Gerar vigas </ToolbarButton>
             <ToolbarButton onClick={generateColumns}> Gerar pilares </ToolbarButton>
             { 
-                activeLayer === LAYER_MAP.columns 
-                && <ToolbarButton onClick={copyElements}> Gerar pilares </ToolbarButton>
+                activeLayer !== LAYER_MAP.columns 
+                && <ToolbarButton onClick={copyElements}> Copiar para outros pavimentos </ToolbarButton>
             }
         </nav>
     )
