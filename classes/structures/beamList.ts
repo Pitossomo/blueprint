@@ -5,6 +5,7 @@ import WallList from "../wallList";
 import FloorList from "../floorList";
 import Node from "../node";
 import BoundingBox from "../boundingBox";
+import { LEVEL_LIST } from "@/app/consts/levelMap";
 
 export default class BeamList implements IElementList<Beam> {
     private elements: Beam[] = [];
@@ -22,17 +23,19 @@ export default class BeamList implements IElementList<Beam> {
         lines.forEach(line => {
             const [x1, y1, x2, y2, heightFromLevel] = line.split(' ').map(parseFloat);
             if ([x1, y1, x2, y2].some(isNaN)) return;
-            newElements.push(new Beam(x1, y1, x2, y2, heightFromLevel, activeLevel));
+            newElements.push(new Beam(x1, y1, x2, y2, activeLevel, heightFromLevel));
         });
         this.elements = newElements
         this.generateIntersections()
     }
 
     getInput(activeLevel: Level): string {
-        return this.elements.map(el => (el.getLevel() === activeLevel)
-            ? `${el.getX1()} ${el.getY1()} ${el.getX2()} ${el.getY2()} ${el.getHeightFromLevel()}`
-            : ''
-        ).join('\n');
+        const elements: string[] = []
+        this.elements.forEach(el => {
+            if (el.getLevel() !== activeLevel) return; 
+            elements.push(el.getInput())
+        })
+        return elements.join('\n');
     }
 
     getElements(): Beam[] { return this.elements; }
@@ -50,10 +53,10 @@ export default class BeamList implements IElementList<Beam> {
             const height = floor.getHeight();
             
             let newFloorBeams = [
-                new Beam(x1, y1, x1, y2, height, level),
-                new Beam(x1, y2, x2, y2, height, level),
-                new Beam(x2, y2, x2, y1, height, level),
-                new Beam(x2, y1, x1, y1, height, level)
+                new Beam(x1, y1, x1, y2, level, height),
+                new Beam(x1, y2, x2, y2, level, height),
+                new Beam(x2, y2, x2, y1, level, height),
+                new Beam(x2, y1, x1, y1, level, height)
             ];
             newFloorBeams.forEach(newBeam => {
                 if (!newBeams.some(b => b.equals(newBeam))) newBeams.push(newBeam);
@@ -68,10 +71,10 @@ export default class BeamList implements IElementList<Beam> {
             const level = wall.getLevel();
             
             let newWallBeams = [
-                new Beam(x1, y1, x1, y2, 0, level),
-                new Beam(x1, y2, x2, y2, 0, level),
-                new Beam(x2, y2, x2, y1, 0, level),
-                new Beam(x2, y1, x1, y1, 0, level)
+                new Beam(x1, y1, x1, y2, level, 0),
+                new Beam(x1, y2, x2, y2, level, 0),
+                new Beam(x2, y2, x2, y1, level, 0),
+                new Beam(x2, y1, x1, y1, level, 0)
             ];
             newWallBeams.forEach(newBeam => {
                 if (!newBeams.some(b => b.equals(newBeam))) newBeams.push(newBeam);
@@ -115,5 +118,22 @@ export default class BeamList implements IElementList<Beam> {
 
     getIntersections(): Node[] {
         return this.intersections;
+    }
+
+    copyToOtherLevels(activeLevel: Level): void {
+        const elements: Beam[] = []
+        this.elements.forEach(element => {
+            if (element.getLevel() !== activeLevel) return;
+            
+            LEVEL_LIST.forEach(level => { elements.push(
+                new Beam(
+                    element.getX1(),element.getY1(),
+                    element.getX2(),element.getY2(),
+                    level,element.getHeightFromLevel()
+                )
+            )})
+        })
+        this.generateIntersections()
+        this.elements = elements
     }
 }
