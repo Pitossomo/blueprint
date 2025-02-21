@@ -37,7 +37,9 @@ export default class ElementsManager {
         const centerY = (canvasHeight - boundingBox.getHeight() * scale) / 2 - boundingBox.getY() * scale;
 
         ctx.setTransform(scale, 0, 0, scale, centerX, centerY);
-        activeLayer.getList().draw(ctx, activeLevel);
+        LAYER_MAP.getAllLayers().forEach(layer => {
+            if (layer.isVisible()) layer.draw(ctx, activeLevel, activeLayer)
+        })
     }
 
     handleInput(input: string, activeLayer: Layer<IElementList<IElement>>, activeLevel: Level) {
