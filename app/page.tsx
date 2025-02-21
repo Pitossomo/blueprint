@@ -24,6 +24,7 @@ export default function Home() {
 	
 	useEffect(() => {
 		elementsManager.draw(activeLayer, activeLevel);
+		activeLayer.setVisibility(true)
 		setCommandLineInput(getInput(activeLayer, activeLevel));
 	}, [activeLayer, activeLevel]);
 
