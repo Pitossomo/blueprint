@@ -18,10 +18,11 @@ export default class Floor implements IElement{
         this.height = height ;
     }
     
-    draw(ctx: CanvasRenderingContext2D, activeLevel: Level): void {
+    draw(ctx: CanvasRenderingContext2D, activeLevel: Level, isLayerActive: boolean): void {
         if (activeLevel !== this.level) return;
         
         ctx.beginPath();
+        ctx.strokeStyle = isLayerActive ? 'black' : 'gray';
         ctx.strokeRect(
             this.x,
             this.y,

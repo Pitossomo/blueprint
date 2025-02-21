@@ -11,8 +11,8 @@ export default class FloorList implements IElementList<Floor> {
         this.elements = [];
     }
 
-    draw(ctx: CanvasRenderingContext2D, activeLevel: Level): void {
-        this.elements.forEach(el => {el.draw(ctx, activeLevel)})
+    draw(ctx: CanvasRenderingContext2D, activeLevel: Level, isLayerActive: boolean): void {
+        this.elements.forEach(el => {el.draw(ctx, activeLevel, isLayerActive)})
     }
 
     parseInput(input: string, activeLevel: Level): void {
