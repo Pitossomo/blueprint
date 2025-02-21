@@ -11,8 +11,8 @@ export default class BeamList implements IElementList<Beam> {
     private elements: Beam[] = [];
     private intersections: Node[] = [];
     
-    draw (ctx: CanvasRenderingContext2D, activeLevel: Level): void {
-        this.elements.forEach(el => {el.draw(ctx, activeLevel)})
+    draw (ctx: CanvasRenderingContext2D, activeLevel: Level, isLayerActive: boolean): void {
+        this.elements.forEach(el => {el.draw(ctx, activeLevel, isLayerActive)})
         this.intersections.forEach(el => el.drawIntersection(ctx, activeLevel))
     }
 
