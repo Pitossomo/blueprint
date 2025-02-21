@@ -9,8 +9,8 @@ import BeamList from "./beamList";
 export default class ColumnList implements IElementList<Column> {
     private elements: Column[] = [];
     
-    draw (ctx: CanvasRenderingContext2D, activeLevel: Level): void {
-        this.elements.forEach(el => {el.draw(ctx, activeLevel)})
+    draw (ctx: CanvasRenderingContext2D, activeLevel: Level, isLayerActive: boolean): void {
+        this.elements.forEach(el => {el.draw(ctx, activeLevel, isLayerActive)})
     }
 
     parseInput(input: string): void {

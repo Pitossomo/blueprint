@@ -17,7 +17,7 @@ export default class Column implements IElement {
         this.baseLevel = baseLevel;
     }
 
-    draw(ctx: CanvasRenderingContext2D, activeLevel: Level): void {
+    draw(ctx: CanvasRenderingContext2D, activeLevel: Level, isLayerActive: boolean): void {
         if (activeLevel.getHeight() < this.baseLevel.getHeight()) return;
         if (activeLevel.getHeight() > this.topLevel.getHeight()) return;
 
@@ -27,6 +27,7 @@ export default class Column implements IElement {
         ctx.lineTo(this.getX2(), this.getY2());
         ctx.lineTo(this.getX1(), this.getY2());
         ctx.lineTo(this.getX1(), this.getY1());
+        ctx.strokeStyle = isLayerActive ? 'black' : 'gray';
         ctx.stroke();
     }
 
