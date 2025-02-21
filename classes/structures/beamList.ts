@@ -133,7 +133,7 @@ export default class BeamList implements IElementList<Beam> {
                 )
             )})
         })
-        this.generateIntersections()
         this.elements = elements
+        this.generateIntersections()
     }
 }
