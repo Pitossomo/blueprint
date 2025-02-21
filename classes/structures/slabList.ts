@@ -9,8 +9,8 @@ import { LEVEL_LIST } from "@/app/consts/levelMap";
 export default class SlabList implements IElementList<Slab> {
     private elements: Slab[] = [];
     
-    draw (ctx: CanvasRenderingContext2D, activeLevel: Level): void {
-        this.elements.forEach(el => {el.draw(ctx, activeLevel)})
+    draw (ctx: CanvasRenderingContext2D, activeLevel: Level, isActiveLayer: boolean): void {
+        this.elements.forEach(el => {el.draw(ctx, activeLevel, isActiveLayer)})
     }
 
     private generateSlabDirection(dx: number, dy: number): SlabDirection  {

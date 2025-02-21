@@ -24,7 +24,7 @@ export default class Slab implements IElement {
         this.load = new SuperficialLoad(permanentLoad || 0, accidentalLoad || 0)
     }
     
-    draw(ctx: CanvasRenderingContext2D, activeLevel: Level): void {
+    draw(ctx: CanvasRenderingContext2D, activeLevel: Level, isLayerActive: boolean): void {
         if (activeLevel !== this.level) return;
         
         ctx.beginPath();
@@ -36,6 +36,7 @@ export default class Slab implements IElement {
         const [endX, endY] = [this.x + this.dx / 2 + xOffset, this.y + this.dy / 2 + yOffset];
         ctx.moveTo(startX, startY);
         ctx.lineTo(endX, endY);
+        ctx.strokeStyle = isLayerActive ? 'black' : 'gray';
         ctx.stroke();
 
         // Set the text properties
