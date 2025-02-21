@@ -37,6 +37,10 @@ class LayerMap {
     getEntries() {
         return Object.entries(this.layers)
     }
+
+    getAllLayers() {
+        return Object.values(this.layers)
+    }
 }
 
 export const LAYER_MAP = new LayerMap()
