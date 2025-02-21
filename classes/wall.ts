@@ -15,10 +15,13 @@ export default class Wall {
         this.level = level;
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
+    draw(ctx: CanvasRenderingContext2D, activeLevel: Level, isLayerActive: boolean) {
+        if (activeLevel !== this.level) return;
         ctx.beginPath();
         ctx.moveTo(this.x1, this.y1);
         ctx.lineTo(this.x2, this.y2);
+        ctx.strokeStyle = isLayerActive ? 'black' : 'gray';
+        ctx.stroke()
     }
 
     getX1(): number { return this.x1; }

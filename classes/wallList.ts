@@ -7,8 +7,8 @@ import { LEVEL_LIST } from "@/app/consts/levelMap";
 export default class WallList implements IElementList<Wall> {
     private elements: Wall[] = [];
     
-    draw = (ctx: CanvasRenderingContext2D) => {
-        this.elements.forEach(el => {el.draw(ctx)})
+    draw = (ctx: CanvasRenderingContext2D, activeLevel: Level, isLayerActive: boolean) => {
+        this.elements.forEach(el => {el.draw(ctx, activeLevel, isLayerActive)})
     }
 
     parseInput(input: string, activeLevel: Level): void {
